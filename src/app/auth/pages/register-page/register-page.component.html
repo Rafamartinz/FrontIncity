@@ -1,0 +1,123 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <form
+    class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm flex flex-col gap-4"
+    [formGroup]="RegisterForm"
+    (ngSubmit)="onSubmit()"
+    ng
+  >
+    <h1 class="text-2xl font-bold text-center text-red-600">Registro</h1>
+
+    <label class="flex items-center border rounded px-3 py-2 gap-2">
+      <svg
+        class="h-[1em] opacity-50"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          stroke-width="2.5"
+          fill="none"
+          stroke="currentColor"
+        >
+          <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </g>
+      </svg>
+      <input
+        type="search"
+        class="flex-1 outline-none"
+        placeholder="Email"
+        formControlName="email"
+      />
+    </label>
+    <span
+      *ngIf="formutils.InvalidInput(RegisterForm, 'email')"
+      class="text-sm text-red-500 ml-1 -mt-2"
+    >
+      {{ formutils.GetMessageError(RegisterForm, "email") }}
+    </span>
+
+    <label class="flex items-center border rounded px-3 py-2 gap-2">
+      <svg
+        class="h-[1em] opacity-50"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          stroke-width="2.5"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path
+            d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+          ></path>
+          <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+        </g>
+      </svg>
+      <input
+        type="password"
+        class="flex-1 outline-none"
+        placeholder="Contraseña"
+        formControlName="password"
+      />
+    </label>
+    <span
+      *ngIf="formutils.InvalidInput(RegisterForm, 'password')"
+      class="text-sm text-red-500 ml-1 -mt-2"
+    >
+      {{ formutils.GetMessageError(RegisterForm, "password") }}
+    </span>
+
+    <label class="flex items-center border rounded px-3 py-2 gap-2">
+      <svg
+        class="h-[1em] opacity-50"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          stroke-width="2.5"
+          fill="none"
+          stroke="currentColor"
+        >
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </g>
+      </svg>
+      <input
+        type="test"
+        class="flex-1 outline-none"
+        placeholder="Nickname"
+        formControlName="fullName"
+      />
+    </label>
+    <span
+      *ngIf="formutils.InvalidInput(RegisterForm, 'fullName')"
+      class="text-sm text-red-500 ml-1 -mt-2"
+    >
+      {{ formutils.GetMessageError(RegisterForm, "fullName") }}
+    </span>
+
+    <button
+      class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded"
+    >
+      Register
+    </button>
+    <div
+      *ngIf="hasError()"
+      class="text-center text-sm text-red-500 bg-red-100 border"
+    >
+      Alguno de los campos no están correcto o no estan rellenos
+    </div>
+    <p class="text-center text-sm text-gray-600">
+      ¿Tienes ya una cuenta?
+      <a routerLink="/auth/login" class="text-red-600 font-medium">
+        Click aqui
+      </a>
+    </p>
+  </form>
+</div>
