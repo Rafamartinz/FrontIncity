@@ -4,7 +4,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
 
 export const AuthRoutes: Routes = [
   {
-    path: '',
+    path: 'login',
     component: LoginPageComponent,
   },
   {

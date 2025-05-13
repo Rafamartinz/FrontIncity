@@ -82,9 +82,13 @@
     >
       Alguno de los campos no están correcto o no estan rellenos
     </div>
+
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
     <p class="text-center text-sm text-gray-600">
       ¿No tienes cuenta?
-      <a routerLink="/register" class="text-red-600 font-medium">
+      <a routerLink="/auth/register" class="text-red-600 font-medium">
         Crea una aquí
       </a>
     </p>

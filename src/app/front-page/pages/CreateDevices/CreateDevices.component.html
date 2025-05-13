@@ -1,0 +1,81 @@
+<navbar></navbar>
+
+<form
+  [formGroup]="CreateForm"
+  (ngSubmit)="onSubmit()"
+  class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6"
+>
+  <h1 class="text-2xl font-bold text-center text-gray-800">
+    Creador de dispositivos
+  </h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="Latitud" class="block text-sm font-medium text-gray-700"
+        >Latitud</label
+      >
+      <input
+        type="number"
+        step="any"
+        name="Latitud"
+        formControlName="lat"
+        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+      />
+    </div>
+
+    <div>
+      <label for="Longitud" class="block text-sm font-medium text-gray-700"
+        >Longitud</label
+      >
+      <input
+        type="number"
+        step="any"
+        formControlName="lgn"
+        class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+      />
+    </div>
+  </div>
+
+  <div>
+    <p class="text-sm font-medium text-gray-700">
+      ¿De qué tipo es el dispositivo?
+    </p>
+    <select
+      name="type"
+      formControlName="type"
+      class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+    >
+      <option value="traffic">Tráfico</option>
+      <option value="environmental">Medioambientales</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Fabricante</label>
+    <input
+      type="text"
+      formControlName="fabricante"
+      class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+    />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium text-gray-700">Descripción</label>
+    <input
+      type="text"
+      formControlName="description"
+      class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+    />
+  </div>
+
+  <div *ngIf="errorMessage" class="text-red-600 text-sm font-medium">
+    {{ errorMessage }}
+  </div>
+
+  <button
+    type="submit"
+    class="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+  >
+    Crear dispositivo
+  </button>
+</form>

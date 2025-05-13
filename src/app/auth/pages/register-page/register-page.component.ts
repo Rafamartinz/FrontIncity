@@ -42,7 +42,7 @@ export class RegisterPageComponent {
 
     if (this.RegisterForm.valid) {
       this.authservice.register(email!, password!, fullName!).subscribe(() => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/auth/login']);
       });
     }
 

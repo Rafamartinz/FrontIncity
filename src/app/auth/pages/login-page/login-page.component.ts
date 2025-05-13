@@ -14,6 +14,8 @@ export class LoginPageComponent {
   formutils = FormUtils;
   private fb = inject(FormBuilder);
   hasError = signal(false);
+
+  errorMessage: any;
   constructor(private router: Router, private authService: AuthService) {}
 
   LoginForm = this.fb.group({
@@ -34,8 +36,28 @@ export class LoginPageComponent {
     password?.toLowerCase();
 
     if (this.LoginForm.valid) {
-      this.authService.login(email!, password!).subscribe(() => {
-        this.router.navigate(['/menu']);
+      this.authService.login(email!, password!).subscribe({
+        next: (isAuthenticated) => {
+          if (isAuthenticated) {
+            this.router.navigateByUrl('/menu');
+          } else {
+            this.hasError.set(true);
+            this.errorMessage.set('Usuario o contraseña incorrectos.');
+          }
+        },
+        error: (err) => {
+          this.hasError.set(true);
+          if (err.status === 401) {
+            this.errorMessage.set('Usuario o contraseña incorrectos.');
+          } else {
+            this.errorMessage.set('Ocurrió un error. Inténtalo de nuevo.');
+          }
+
+          setTimeout(() => {
+            this.hasError.set(false);
+            this.errorMessage.set('');
+          }, 3000);
+        },
       });
     }
     this.LoginForm.markAllAsTouched();
