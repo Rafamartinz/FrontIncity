@@ -6,18 +6,24 @@ import { NavbarComponent } from '../../../shared/components/navbar/navbar.compon
 import { AsyncPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-list-device',
-  imports: [NavbarComponent, AsyncPipe, NgIf, NgFor],
+  imports: [NavbarComponent, AsyncPipe, NgIf, NgFor, ReactiveFormsModule],
   templateUrl: './ListDevice.component.html',
   styleUrls: ['../../../../styles.css'],
 })
 export class ListDeviceComponent {
   http = inject(HttpClient);
+  fb = inject(FormBuilder);
   frontservice = inject(FrontService);
   devices$: Observable<any>;
-
+  FilterForm = this.fb.group({
+    type: ['', [Validators.required]],
+    fecIni: ['', [Validators.required]],
+    fecFin: ['', [Validators.required]],
+  });
   constructor() {
     this.devices$ = this.frontservice.getDevices();
   }
@@ -30,15 +36,6 @@ export class ListDeviceComponent {
         let fabricante = '';
         let type = '';
         let description = '';
-
-        for (const item of devices) {
-          lat = item.lat;
-          lgn = item.lgn;
-          fabricante = item.fabricante;
-          type = item.type;
-          description = item.description;
-          console.log(lat, lgn, fabricante, type, description);
-        }
       },
       error: (err) => {
         console.error('Error al obtener los dispositivos', err);

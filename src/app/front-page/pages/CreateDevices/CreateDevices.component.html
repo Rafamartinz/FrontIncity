@@ -21,6 +21,12 @@
         formControlName="lat"
         class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
       />
+      <span
+        *ngIf="formutils.InvalidInput(CreateForm, 'lat')"
+        class="text-sm text-red-500 ml-1 -mt-2"
+      >
+        {{ formutils.GetMessageError(CreateForm, "lat") }}
+      </span>
     </div>
 
     <div>
@@ -33,6 +39,12 @@
         formControlName="lgn"
         class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
       />
+      <span
+        *ngIf="formutils.InvalidInput(CreateForm, 'lgn')"
+        class="text-sm text-red-500 ml-1 -mt-2"
+      >
+        <p>{{ formutils.GetMessageError(CreateForm, "lgn") }}</p>
+      </span>
     </div>
   </div>
 
@@ -67,10 +79,16 @@
       class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
     />
   </div>
-
-  <div *ngIf="errorMessage" class="text-red-600 text-sm font-medium">
-    {{ errorMessage }}
+  <div
+    *ngIf="hasError()"
+    class="text-center text-sm text-red-500 bg-red-100 border"
+  >
+    Alguno de los campos no están correcto o no estan rellenos
   </div>
+
+  <span *ngIf="Okmessage" class="text-green-500 text-center bg-green-100">
+    <p>{{ Okmessage }}</p>
+  </span>
 
   <button
     type="submit"

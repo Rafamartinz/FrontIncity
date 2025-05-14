@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormUtils } from '../../../auth/formUtils/formUtils';
+import { FormUtils } from '../../../shared/formUtils/formUtils';
 import { AuthService } from '../../../auth/service/auth.service';
 import { FrontService } from '../../services/front-service';
 import { NgIf } from '@angular/common';
@@ -20,13 +20,13 @@ export class CreateDevicesComponent {
   frontService = inject(FrontService);
 
   CreateForm = this.fb.group({
-    lat: [0.0, [Validators.required]],
-    lgn: [0.0, [Validators.required]],
+    lat: [0.0, [Validators.required, Validators.pattern(/^[-+]?\d+(\.\d+)?$/)]],
+    lgn: [0.0, [Validators.required, Validators.pattern(/^[-+]?\d+(\.\d+)?$/)]],
     type: ['', [Validators.required]],
     fabricante: ['', [Validators.required]],
     description: ['', [Validators.required]],
   });
-  errorMessage = '';
+  Okmessage = '';
 
   onSubmit() {
     const {
@@ -49,21 +49,28 @@ export class CreateDevicesComponent {
       this.frontService
         .createDevices(lat!, lgn!, type!, fabricante!, description!, guid!)
         .subscribe({
+          next: (next) => {
+            this.Okmessage = 'Registro completado';
+            setTimeout(() => {
+              this.Okmessage = '';
+            }, 3000);
+          },
           error: (err) => {
             this.hasError.set(true);
-            if (err.status === 401) {
-            } else {
-              console.log(err);
-              this.errorMessage = 'Noooo ocurrió un error...';
-            }
 
             setTimeout(() => {
               this.hasError.set(false);
-              this.errorMessage = ' ';
+              this.Okmessage = ' ';
             }, 3000);
           },
         });
-      console.log(this.CreateForm.value);
+      this.CreateForm.reset({
+        lat: 0.0,
+        lgn: 0.0,
+        type: '',
+        fabricante: '',
+        description: '',
+      });
     }
     this.CreateForm.markAllAsTouched();
   }

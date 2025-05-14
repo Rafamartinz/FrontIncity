@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CreateDevice } from '../interfaces/createDevice.interface';
-import { Observable, onErrorResumeNextWith, tap } from 'rxjs';
+import { map, Observable, onErrorResumeNextWith, tap } from 'rxjs';
 
 const baseurl = 'http://localhost:3000/api';
 
@@ -26,9 +26,11 @@ export class FrontService {
     return this.http.post(`${baseurl}/devices`, body);
   }
 
-  getDevices() {
-    return this.http
-      .get(`${baseurl}/devices`)
-      .pipe(tap((response) => console.log(response)));
+    getDevices() {
+    return this.http.get(`${baseurl}/devices/filter`,{
+      reference:
+      fecIni:
+      endDate
+    });
   }
 }

@@ -25,6 +25,10 @@ export class FormUtils {
         case 'maxlength':
           return 'Te has pasado de caracteres ';
           break;
+
+        case 'pattern':
+          return 'Las coordenadas no son adecuadas ';
+          break;
         default:
           break;
       }

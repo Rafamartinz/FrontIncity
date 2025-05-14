@@ -4,24 +4,51 @@
   Listado de dispositivos
 </h1>
 
-<div
-  class="grid grid-rows-1 sm:grid-rows-2 md:grid-rows-3 lg:grid-rows-4 gap-6 p-4"
->
-  <div *ngIf="devices$ | async as devices">
-    <div *ngFor="let device of devices" class="mb-8">
+<form [formGroup]="FilterForm" (ngSubmit)="ShowDevices()">
+  <div class="join filter">
+    <label class="select join-item">
+      <select class="select select-bordered" formControlName="type">
+        <option disabled selected>Selecciona tipo</option>
+        <option value="traffic">Tráfico</option>
+        <option value="environmental">Environmental</option>
+      </select>
+    </label>
+
+    <label class="input join-item">
+      <input
+        type="date"
+        class="input input-bordered"
+        placeholder="Desde"
+        formControlName="fecIni"
+      />
+    </label>
+
+    <label class="input join-item">
+      <input
+        type="date"
+        class="input input-bordered"
+        placeholder="Hasta"
+        formControlName="fecFin"
+      />
+    </label>
+
+    <button class="btn btn-neutral join-item">Filtrar</button>
+  </div>
+</form>
+<div *ngIf="devices$ | async as devices">
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 px-2"
+  >
+    <div *ngFor="let device of devices">
       <div
-        class="card bg-white p-6 rounded-xl shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+        class="card w-full shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
       >
-        <div class="card-details text-black">
-          <p class="text-body">
-            <span class="relative z-10 text-gray-800">
-              <p><strong>Fabricante:</strong> {{ device.fabricante }}</p>
-              <p><strong>Descripción:</strong> {{ device.description }}</p>
-              <p><strong>Latitud:</strong> {{ device.lat }}</p>
-              <p><strong>Tipo:</strong> {{ device.type }}</p>
-              <p><strong>Longitud:</strong> {{ device.lgn }}</p>
-            </span>
-          </p>
+        <div class="card-details text-black text-sm">
+          <p><strong>Fabricante:</strong> {{ device.fabricante }}</p>
+          <p><strong>Descripción:</strong> {{ device.description }}</p>
+          <p><strong>Latitud:</strong> {{ device.lat }}</p>
+          <p><strong>Tipo:</strong> {{ device.type }}</p>
+          <p><strong>Longitud:</strong> {{ device.lgn }}</p>
         </div>
       </div>
     </div>
