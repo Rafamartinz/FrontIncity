@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { CreateDevice } from '../interfaces/createDevice.interface';
 import { map, Observable, onErrorResumeNextWith, tap } from 'rxjs';
 
@@ -12,6 +12,9 @@ export class FrontService {
 
   getEnvironmental() {
     return this.http.get(`${baseurl}/environmental`);
+  }
+  getTraffic() {
+    return this.http.get(`${baseurl}/traffic`);
   }
 
   createDevices(
@@ -26,11 +29,25 @@ export class FrontService {
     return this.http.post(`${baseurl}/devices`, body);
   }
 
-    getDevices() {
-    return this.http.get(`${baseurl}/devices/filter`,{
-      reference:
-      fecIni:
-      endDate
+  getDevices(
+    type: string,
+    fecIni: string,
+    endDate: string
+  ): Observable<CreateDevice[]> {
+    return this.http.get<CreateDevice[]>(`${baseurl}/devices/filter`, {
+      params: {
+        fecIni: fecIni,
+        endDate: endDate,
+        type: type,
+      },
+    });
+  }
+
+  deleteDevicebyID(id: string) {
+    return this.http.delete(`${baseurl}/devices/delete`, {
+      params: {
+        id: id,
+      },
     });
   }
 }

@@ -7,6 +7,7 @@ import { CreateDevicesComponent } from './front-page/pages/CreateDevices/CreateD
 import { LoginPageComponent } from './auth/pages/login-page/login-page.component';
 import { RegisterPageComponent } from './auth/pages/register-page/register-page.component';
 import { ListDeviceComponent } from './front-page/pages/ListDevice/ListDevice.component';
+import { DashboardPageComponent } from './front-page/pages/dashboard.page/dashboard.page.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,11 @@ export const routes: Routes = [
   {
     path: 'create',
     component: CreateDevicesComponent,
+    canActivate: [AuthenticatedGuard], // Solo si está autenticado
+  },
+  {
+    path: 'dashboard',
+    component: DashboardPageComponent,
     canActivate: [AuthenticatedGuard], // Solo si está autenticado
   },
   {

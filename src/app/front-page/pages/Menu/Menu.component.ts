@@ -12,38 +12,7 @@ import { FrontService } from '../../services/front-service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { environment } from './../../../../environments/environment';
-import {
-  ArcElement,
-  Tooltip,
-  Legend,
-  Title,
-  PieController,
-  LinearScale,
-  RadialLinearScale,
-  LineController,
-  TimeScale,
-  CategoryScale,
-  PointElement,
-  LineElement,
-  Chart,
-  Filler,
-} from 'chart.js';
-
-Chart.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  PieController,
-  Title,
-  LinearScale,
-  RadialLinearScale,
-  LineController,
-  TimeScale,
-  CategoryScale,
-  PointElement,
-  LineElement,
-  Filler
-);
+import { ActivatedRoute } from '@angular/router';
 
 mapboxgl.accessToken = environment.mapboxKey;
 
@@ -65,13 +34,20 @@ export class MenuComponent implements AfterViewInit {
   @ViewChild('map', { static: false }) divElement!: ElementRef;
 
   frontService = inject(FrontService);
+  //Data mapa
   map = signal<mapboxgl.Map | null>(null);
   zoom = signal(14);
 
+  //Data environmental
   environmentalData = signal<any>([]);
-  avgTemperature: any = signal(null);
-  avgPressure: any = signal(null);
-  avgHumidity: any = signal(null);
+  avgTemperature: any = signal(10.2);
+  avgPressure: any = signal(1020.21);
+  avgHumidity: any = signal(74.9);
+
+  //Data trafffic
+  trafficData = signal<any>([]);
+  density: any = signal(null);
+  actions: any = signal(null);
 
   ngAfterViewInit(): void {
     if (!this.divElement?.nativeElement) return;
@@ -82,7 +58,8 @@ export class MenuComponent implements AfterViewInit {
       center: [-3.7849, 37.7796], // Jaén
       zoom: this.zoom(),
     });
-    this.getEnvironmental();
+
+    this.getTraffic();
     this.mapListeners(map);
   }
 
@@ -93,12 +70,12 @@ export class MenuComponent implements AfterViewInit {
     this.map.set(map);
   }
 
-  getEnvironmental() {
-    this.frontService.getEnvironmental().subscribe({
+  getTraffic() {
+    this.frontService.getTraffic().subscribe({
       next: (data) => {
         console.log(data);
-        this.environmentalData.set(data);
-        this.calculateAverage();
+        this.trafficData.set(data);
+        this.calculateTrafficStats();
       },
       error: (err) => {
         console.log(err);
@@ -106,113 +83,23 @@ export class MenuComponent implements AfterViewInit {
     });
   }
 
-  calculateAverage() {
-    const data = this.environmentalData();
-    let amountHumidity = 0;
-    let amountTemperature = 0;
-    let amountPressure = 0;
+  calculateTrafficStats() {
+    const data = this.trafficData();
+
+    let entradas = 0;
+    let salidas = 0;
+    const actuaciones = new Set();
 
     for (const item of data) {
-      amountHumidity += item.humidity;
-      amountTemperature += item.temperature;
-      amountPressure += item.pressure;
+      if (item.direction === 0) entradas++;
+      if (item.direction === 1) salidas++;
+      actuaciones.add(item.plate);
     }
 
-    this.avgHumidity.set(amountHumidity / data.length);
-    this.avgPressure.set(amountPressure / data.length);
-    this.avgTemperature.set(amountTemperature / data.length);
+    console.log(entradas);
+    console.log(salidas);
+
+    this.density.set(entradas - salidas);
+    this.actions.set(actuaciones.size);
   }
-  /*
-  private tempChart: Chart | null = null;
-  private pressureChart: Chart | null = null;
-  private humidityChart: Chart | null = null;
-
-  createCharts() {
-    const data = this.environmentalData();
-    const labels = data.map((item: any) =>
-      new Date(item.timestamp).toLocaleTimeString()
-    );
-
-    const destroyIfExists = (chart: Chart | null) => {
-      if (chart) chart.destroy();
-    };
-
-    // Temperatura
-    destroyIfExists(this.tempChart);
-    this.tempChart = new Chart(
-      this.temperatureCanvas.nativeElement.getContext('2d'),
-      {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Temperatura (°C)',
-              data: data.map((item: any) => item.temperature),
-              borderColor: 'red',
-              fill: false,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: false },
-          },
-        },
-      }
-    );
-
-    // Presión
-    destroyIfExists(this.pressureChart);
-    this.pressureChart = new Chart(
-      this.pressureCanvas.nativeElement.getContext('2d'),
-      {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Presión (hPa)',
-              data: data.map((item: any) => item.pressure),
-              borderColor: 'blue',
-              fill: false,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: false },
-          },
-        },
-      }
-    );
-
-    // Humedad
-    destroyIfExists(this.humidityChart);
-    this.humidityChart = new Chart(
-      this.humidityCanvas.nativeElement.getContext('2d'),
-      {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [
-            {
-              label: 'Humedad (%)',
-              data: data.map((item: any) => item.humidity),
-              borderColor: 'green',
-              fill: false,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: true },
-          },
-        },
-      }
-    );
-  } */
 }

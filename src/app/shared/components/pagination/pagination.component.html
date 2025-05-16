@@ -1,0 +1,31 @@
+<ul class="flex items-center -space-x-px h-8 text-sm">
+  <li>
+    <button
+      [disabled]="currentPage === 1"
+      (click)="goToPage(currentPage - 1)"
+      class="px-3 py-1"
+    >
+      «
+    </button>
+  </li>
+
+  <li *ngFor="let page of pagesList">
+    <button
+      [class.bg-blue-500]="page === currentPage"
+      class="px-3 py-1"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+  </li>
+
+  <li>
+    <button
+      [disabled]="currentPage === pages"
+      (click)="goToPage(currentPage + 1)"
+      class="px-3 py-1"
+    >
+      »
+    </button>
+  </li>
+</ul>

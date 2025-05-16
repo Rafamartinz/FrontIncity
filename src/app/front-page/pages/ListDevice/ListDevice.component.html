@@ -1,56 +1,89 @@
 <navbar></navbar>
 
-<h1 class="text-center text-3xl font-bold mb-6 text-gray-900">
-  Listado de dispositivos
-</h1>
+<div class="mt-5">
+  <h1 class="text-center text-3xl font-bold mb-6 text-gray-900">
+    Listado de dispositivos
+  </h1>
 
-<form [formGroup]="FilterForm" (ngSubmit)="ShowDevices()">
-  <div class="join filter">
-    <label class="select join-item">
-      <select class="select select-bordered" formControlName="type">
-        <option disabled selected>Selecciona tipo</option>
-        <option value="traffic">Tráfico</option>
-        <option value="environmental">Environmental</option>
-      </select>
-    </label>
-
-    <label class="input join-item">
-      <input
-        type="date"
-        class="input input-bordered"
-        placeholder="Desde"
-        formControlName="fecIni"
-      />
-    </label>
-
-    <label class="input join-item">
-      <input
-        type="date"
-        class="input input-bordered"
-        placeholder="Hasta"
-        formControlName="fecFin"
-      />
-    </label>
-
-    <button class="btn btn-neutral join-item">Filtrar</button>
-  </div>
-</form>
-<div *ngIf="devices$ | async as devices">
-  <div
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-3 px-2"
+  <form
+    [formGroup]="FilterForm"
+    (ngSubmit)="ShowDevices()"
+    class="max-w-5xl mx-auto mb-8 p-6 bg-white rounded-lg shadow-md"
   >
-    <div *ngFor="let device of devices">
-      <div
-        class="card w-full shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+    <div class="join filter flex flex-wrap gap-4 items-end justify-center">
+      <label class="join-item w-40">
+        <select class="select select-bordered w-full" formControlName="type">
+          <option disabled selected>Selecciona tipo</option>
+          <option value="traffic">Tráfico</option>
+          <option value="environmental">Environmental</option>
+        </select>
+      </label>
+
+      <label class="input join-item w-40">
+        <input
+          type="date"
+          class="input input-bordered w-full"
+          placeholder="Desde"
+          formControlName="fecIni"
+        />
+      </label>
+
+      <label class="input join-item w-40">
+        <input
+          type="date"
+          class="input input-bordered w-full"
+          placeholder="Hasta"
+          formControlName="fecFin"
+        />
+      </label>
+
+      <button type="submit" class="btn btn-neutral join-item px-6 py-2">
+        Filtrar
+      </button>
+    </div>
+  </form>
+</div>
+
+<div
+  class="flex flex-wrap justify-center items-center gap-6 max-w-7xl mx-auto px-4"
+>
+  <div
+    *ngFor="let device of pagedDevices; index as i"
+    class="card shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out rounded-lg bg-white p-5 w-72"
+  >
+    <div class="card-details text-black text-sm">
+      <button
+        (click)="deleteDevice(device._id)"
+        class="absolute top-3 right-3 text-red-600 hover:text-red-800"
+        aria-label="Eliminar dispositivo"
       >
-        <div class="card-details text-black text-sm">
-          <p><strong>Fabricante:</strong> {{ device.fabricante }}</p>
-          <p><strong>Descripción:</strong> {{ device.description }}</p>
-          <p><strong>Latitud:</strong> {{ device.lat }}</p>
-          <p><strong>Tipo:</strong> {{ device.type }}</p>
-          <p><strong>Longitud:</strong> {{ device.lgn }}</p>
-        </div>
-      </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <p class="mb-1"><strong>Latitud:</strong> {{ device.lat }}</p>
+      <p class="mb-1"><strong>Longitud:</strong> {{ device.lgn }}</p>
+      <p class="mb-1"><strong>Tipo:</strong> {{ device.type }}</p>
+      <p class="mb-1"><strong>Descripción:</strong> {{ device.description }}</p>
+      <p class="mb-1"><strong>Fabricante:</strong> {{ device.fabricante }}</p>
     </div>
   </div>
+
+  <app-pagination
+    [pages]="totalPages"
+    [currentPage]="currentPage"
+    (pageChange)="setPage($event)"
+  />
 </div>

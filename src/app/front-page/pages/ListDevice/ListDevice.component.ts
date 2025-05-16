@@ -7,10 +7,11 @@ import { AsyncPipe, JsonPipe, NgFor, NgIf } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-list-device',
-  imports: [NavbarComponent, AsyncPipe, NgIf, NgFor, ReactiveFormsModule],
+  imports: [NavbarComponent, ReactiveFormsModule, NgFor, PaginationComponent],
   templateUrl: './ListDevice.component.html',
   styleUrls: ['../../../../styles.css'],
 })
@@ -18,28 +19,68 @@ export class ListDeviceComponent {
   http = inject(HttpClient);
   fb = inject(FormBuilder);
   frontservice = inject(FrontService);
-  devices$: Observable<any>;
+
+  //Pagination
+  devices: any[] = [];
+  pagedDevices: any[] = [];
+  devicesPorpage = 10;
+  currentPage = 1;
+
   FilterForm = this.fb.group({
     type: ['', [Validators.required]],
     fecIni: ['', [Validators.required]],
     fecFin: ['', [Validators.required]],
   });
-  constructor() {
-    this.devices$ = this.frontservice.getDevices();
+  deviceCache = new Map<string, any[]>();
+
+  private generateCacheKey(
+    type: string,
+    fecIni: string,
+    fecFin: string
+  ): string {
+    return `${type}|${fecIni}|${fecFin}`;
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.devices.length / this.devicesPorpage);
+  }
+
+  setPage(page: number) {
+    this.currentPage = page;
+    const start = (page - 1) * this.devicesPorpage;
+    const end = start + this.devicesPorpage;
+    this.pagedDevices = this.devices.slice(start, end);
   }
 
   ShowDevices() {
-    this.devices$.subscribe({
+    const fecIniValue = this.FilterForm.controls['fecIni']?.value as string;
+    const fecFinValue = this.FilterForm.controls['fecFin']?.value as string;
+    const type = this.FilterForm.controls['type']?.value as string;
+
+    const cacheKey = this.generateCacheKey(type, fecIniValue, fecFinValue);
+
+    if (this.deviceCache.has(cacheKey)) {
+      this.devices = this.deviceCache.get(cacheKey)!;
+      this.setPage(1);
+      return;
+    }
+
+    this.frontservice.getDevices(type, fecIniValue, fecFinValue).subscribe({
       next: (devices) => {
-        let lat = 0;
-        let lgn = 0;
-        let fabricante = '';
-        let type = '';
-        let description = '';
+        this.deviceCache.set(cacheKey, devices); // Guardar en cache
+        this.devices = devices;
+        this.setPage(1);
       },
       error: (err) => {
         console.error('Error al obtener los dispositivos', err);
       },
+    });
+  }
+
+  deleteDevice(id: string) {
+    this.frontservice.deleteDevicebyID(id).subscribe(() => {
+      this.devices = this.devices.filter((device) => device._id !== id);
+      this.setPage(this.currentPage);
     });
   }
 }
