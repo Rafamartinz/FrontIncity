@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-device',
@@ -19,6 +20,7 @@ export class ListDeviceComponent {
   http = inject(HttpClient);
   fb = inject(FormBuilder);
   frontservice = inject(FrontService);
+  router = inject(Router);
 
   //Pagination
   devices: any[] = [];
@@ -76,11 +78,14 @@ export class ListDeviceComponent {
       },
     });
   }
-
+  viewDevice(device: any) {
+    this.router.navigate(['/dispositivo', device._id]);
+  }
+  /*
   deleteDevice(id: string) {
     this.frontservice.deleteDevicebyID(id).subscribe(() => {
       this.devices = this.devices.filter((device) => device._id !== id);
       this.setPage(this.currentPage);
     });
-  }
+  } */
 }

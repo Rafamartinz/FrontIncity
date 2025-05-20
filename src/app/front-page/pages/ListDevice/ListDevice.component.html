@@ -1,6 +1,6 @@
 <navbar></navbar>
 
-<div class="mt-5">
+<div class="mt-10">
   <h1 class="text-center text-3xl font-bold mb-6 text-gray-900">
     Listado de dispositivos
   </h1>
@@ -44,46 +44,48 @@
   </form>
 </div>
 
-<div
-  class="flex flex-wrap justify-center items-center gap-6 max-w-7xl mx-auto px-4"
->
-  <div
-    *ngFor="let device of pagedDevices; index as i"
-    class="card shadow-md hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out rounded-lg bg-white p-5 w-72"
-  >
-    <div class="card-details text-black text-sm">
-      <button
-        (click)="deleteDevice(device._id)"
-        class="absolute top-3 right-3 text-red-600 hover:text-red-800"
-        aria-label="Eliminar dispositivo"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+<div class="flex flex-col items-center gap-6 max-w-7xl mx-auto px-4">
+  <div class="flex flex-wrap justify-center items-center gap-6 w-full">
+    <div
+      *ngFor="let device of pagedDevices; index as i"
+      (click)="viewDevice(device)"
+      class="w-80 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 p-5 flex flex-col justify-between"
+    >
+      <div class="space-y-2">
+        <h3 class="text-xl font-semibold text-gray-800">
+          {{ device.description || "Dispositivo" }}
+        </h3>
+        <span
+          class="inline-block px-2 py-0.5 text-xs font-medium back bg-gray-900 text-white rounded"
         >
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
+          {{ device.type }}
+        </span>
+      </div>
 
-      <p class="mb-1"><strong>Latitud:</strong> {{ device.lat }}</p>
-      <p class="mb-1"><strong>Longitud:</strong> {{ device.lgn }}</p>
-      <p class="mb-1"><strong>Tipo:</strong> {{ device.type }}</p>
-      <p class="mb-1"><strong>Descripción:</strong> {{ device.description }}</p>
-      <p class="mb-1"><strong>Fabricante:</strong> {{ device.fabricante }}</p>
+      <hr class="my-4 bg-gray-900" />
+
+      <ul class="space-y-1 text-sm text-gray-700">
+        <li>
+          <span class="font-medium text-gray-600">Latitud:</span>
+          {{ device.lat }}
+        </li>
+        <li>
+          <span class="font-medium text-gray-600">Longitud:</span>
+          {{ device.lgn }}
+        </li>
+        <li>
+          <span class="font-medium text-gray-600">Fabricante:</span>
+          {{ device.fabricante }}
+        </li>
+      </ul>
     </div>
   </div>
 
-  <app-pagination
-    [pages]="totalPages"
-    [currentPage]="currentPage"
-    (pageChange)="setPage($event)"
-  />
+  <div class="mt-6">
+    <app-pagination
+      [pages]="totalPages"
+      [currentPage]="currentPage"
+      (pageChange)="setPage($event)"
+    ></app-pagination>
+  </div>
 </div>

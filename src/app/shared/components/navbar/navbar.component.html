@@ -48,7 +48,7 @@
   </div>
 
   <h5 class="btn btn-ghost text-2xl font-semibold">
-    {{ authservice.user()?.fullName }}
+    {{ authservice.user()?.fullName | titlecase }}
   </h5>
 
   <div class="flex-none">

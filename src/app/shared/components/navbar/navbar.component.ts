@@ -3,10 +3,11 @@ import { Router, RouterLink } from '@angular/router';
 import { routes } from '../../../app.routes';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth/service/auth.service';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, TitleCasePipe],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {

@@ -20,6 +20,7 @@ export class DashboardPageComponent implements AfterViewInit {
   avgTemperature: any = signal(null);
   avgPressure: any = signal(null);
   avgHumidity: any = signal(null);
+  avgHeat = signal<number | null>(null);
 
   //Data trafffic
   trafficData = signal<any>([]);
@@ -37,7 +38,7 @@ export class DashboardPageComponent implements AfterViewInit {
         console.log(data);
         this.environmentalData.set(data);
         this.calculateAverage();
-        this.createTemperatureChart();
+        this.createTemperatureChartDaily();
       },
       error: (err) => {
         console.log(err);
@@ -57,10 +58,26 @@ export class DashboardPageComponent implements AfterViewInit {
     }
 
     const count = data.length;
-    this.avgHumidity.set(amountHumidity / count);
+    const avgHumidity = amountHumidity / count;
+    const avgTemperature = amountTemperature / count;
+
+    this.avgHumidity.set(avgHumidity);
     this.avgPressure.set(amountPressure / count);
-    this.avgTemperature.set(amountTemperature / count);
+    this.avgTemperature.set(avgTemperature);
+
+    //Indice de calor
+    const vaporPressure =
+      (avgHumidity / 100) *
+      6.105 *
+      Math.exp((17.27 * avgTemperature) / (237.7 + avgTemperature));
+
+    const heatIndex =
+      avgTemperature + 0.33 * avgHumidity - 0.7 * vaporPressure - 4.0;
+
+    this.avgHeat.set(heatIndex);
   }
+
+  //Trafico
 
   getTraffic() {
     this.frontService.getTraffic().subscribe({
@@ -68,6 +85,7 @@ export class DashboardPageComponent implements AfterViewInit {
         console.log(data);
         this.trafficData.set(data);
         this.calculateTrafficStats();
+        this.createTrafficChartDaily();
       },
       error: (err) => {
         console.log(err);
@@ -95,32 +113,9 @@ export class DashboardPageComponent implements AfterViewInit {
     this.actions.set(actuaciones.size);
   }
 
-  /*
-1. Índice de calor (Heat Index)
-Combinando temperatura y humedad, puedes calcular el índice de calor, que indica cómo se siente realmente la temperatura (más útil en climas cálidos y húmedos como los de verano en Jaén).
-
-Fórmula aproximada (simplificada):
-
-𝐻
-𝐼
-=
-𝑇
-+
-0.33
-∗
-𝐻
-−
-0.70
-∗
-𝑃
-−
-4.00
-HI=T+0.33∗H−0.70∗P−4.00
-O usar fórmulas más precisas si usas código (como Python con metpy). */
-
   //Chart
 
-  createTemperatureChart() {
+  createTemperatureChartDaily() {
     const data = this.environmentalData();
 
     const labels = data.map((item: { date: any }) => {
@@ -175,5 +170,69 @@ O usar fórmulas más precisas si usas código (como Python con metpy). */
     };
 
     new Chart('temperatureChart', config);
+  }
+  createTrafficChartDaily() {
+    const data = this.trafficData();
+
+    const hoursMap = new Map<string, { entradas: number; salidas: number }>();
+
+    for (const item of data) {
+      const date = new Date(item.date);
+      const hour = date.getHours().toString().padStart(2, '0') + ':00';
+
+      if (!hoursMap.has(hour)) {
+        hoursMap.set(hour, { entradas: 0, salidas: 0 });
+      }
+
+      const current = hoursMap.get(hour)!;
+
+      if (item.direction === 0) current.entradas += 1;
+      if (item.direction === 1) current.salidas += 1;
+    }
+
+    const labels = Array.from(hoursMap.keys());
+    const entradasData = labels.map((label) => hoursMap.get(label)!.entradas);
+    const salidasData = labels.map((label) => hoursMap.get(label)!.salidas);
+
+    const chartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Entradas',
+          data: entradasData,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        },
+        {
+          label: 'Salidas',
+          data: salidasData,
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        },
+      ],
+    };
+
+    const config = {
+      type: 'bar' as const,
+      data: chartData,
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Hora',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Cantidad de vehículos',
+            },
+            beginAtZero: true,
+          },
+        },
+      },
+    };
+
+    new Chart('trafficChart', config);
   }
 }

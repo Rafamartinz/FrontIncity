@@ -1,4 +1,3 @@
 //TODO
 
-Viernes paginacion,cache(para listar devices),empezar dashboard
-Lunes seguir dashboard,mostrar dispositivos en mapa mediante lat,lng
+martes mostrar info de un solo dispositivo,iconos del mapa con ruta a mostrar inod de este y hover muestra nombre del dispositivo

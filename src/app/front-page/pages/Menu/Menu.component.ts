@@ -7,12 +7,13 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import mapboxgl, { Point } from 'mapbox-gl';
+import mapboxgl, { Marker, Point } from 'mapbox-gl';
 import { FrontService } from '../../services/front-service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { environment } from './../../../../environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
+import { CreateDevice } from '../../interfaces/createDevice.interface';
 
 mapboxgl.accessToken = environment.mapboxKey;
 
@@ -33,7 +34,9 @@ mapboxgl.accessToken = environment.mapboxKey;
 export class MenuComponent implements AfterViewInit {
   @ViewChild('map', { static: false }) divElement!: ElementRef;
 
+  devices = signal<CreateDevice[]>([]);
   frontService = inject(FrontService);
+
   //Data mapa
   map = signal<mapboxgl.Map | null>(null);
   zoom = signal(14);
@@ -49,6 +52,7 @@ export class MenuComponent implements AfterViewInit {
   density: any = signal(null);
   actions: any = signal(null);
 
+  //MOstrar mapa y markers
   ngAfterViewInit(): void {
     if (!this.divElement?.nativeElement) return;
 
@@ -61,12 +65,36 @@ export class MenuComponent implements AfterViewInit {
 
     this.getTraffic();
     this.mapListeners(map);
+    this.frontService.getAlldevices().subscribe((devices) => {
+      this.devices.set(devices);
+      console.log(devices);
+      this.ShowDevicesMap();
+    });
+  }
+
+  ShowDevicesMap() {
+    if (!this.map()) return;
+    const map = this.map()!;
+
+    const allDevices = this.devices();
+
+    allDevices.forEach((device) => {
+      const lat = device.lat;
+      const lng = device.lgn;
+
+      new mapboxgl.Marker({
+        color:
+          '#' +
+          Math.floor(Math.random() * 0xffffff)
+            .toString(16)
+            .padStart(6, '0'),
+      })
+        .setLngLat([lat, lng])
+        .addTo(map);
+    });
   }
 
   mapListeners(map: mapboxgl.Map) {
-    map.addControl(new mapboxgl.FullscreenControl());
-    map.addControl(new mapboxgl.NavigationControl());
-    map.addControl(new mapboxgl.ScaleControl());
     this.map.set(map);
   }
 

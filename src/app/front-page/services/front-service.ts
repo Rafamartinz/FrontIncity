@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { CreateDevice } from '../interfaces/createDevice.interface';
-import { map, Observable, onErrorResumeNextWith, tap } from 'rxjs';
+import { map, Observable, of, onErrorResumeNextWith, tap } from 'rxjs';
 
 const baseurl = 'http://localhost:3000/api';
 
@@ -43,11 +43,19 @@ export class FrontService {
     });
   }
 
+  getAlldevices() {
+    return this.http.get<CreateDevice[]>(`${baseurl}/devices`);
+  }
+  /*
   deleteDevicebyID(id: string) {
     return this.http.delete(`${baseurl}/devices/delete`, {
       params: {
         id: id,
       },
     });
+  } */
+
+  getDeviceById(id: string): Observable<CreateDevice> {
+    return this.http.get<CreateDevice>(`${baseurl}/devices/${id}`);
   }
 }

@@ -1,6 +1,6 @@
 export interface CreateDevice {
-  latitud: number;
-  longitud: number;
+  lat: number;
+  lgn: number;
   type: string;
   fabricante: string;
   description: string;

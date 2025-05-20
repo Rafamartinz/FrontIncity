@@ -8,32 +8,38 @@ import { LoginPageComponent } from './auth/pages/login-page/login-page.component
 import { RegisterPageComponent } from './auth/pages/register-page/register-page.component';
 import { ListDeviceComponent } from './front-page/pages/ListDevice/ListDevice.component';
 import { DashboardPageComponent } from './front-page/pages/dashboard.page/dashboard.page.component';
+import { ShowDeviceComponent } from './front-page/pages/ShowDevice/ShowDevice.component';
 
 export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes'),
-    canActivate: [NotAuthenticatedGuard], // Solo si NO está autenticado
+    canActivate: [NotAuthenticatedGuard], // Solo si NO esta autenticado
   },
   {
     path: 'menu',
     component: MenuComponent,
-    canActivate: [AuthenticatedGuard], // Solo si está autenticado
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {
     path: 'ListDevice',
     component: ListDeviceComponent,
-    canActivate: [AuthenticatedGuard], // Solo si está autenticado
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {
     path: 'create',
     component: CreateDevicesComponent,
-    canActivate: [AuthenticatedGuard], // Solo si está autenticado
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {
     path: 'dashboard',
     component: DashboardPageComponent,
-    canActivate: [AuthenticatedGuard], // Solo si está autenticado
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
+  },
+  {
+    path: 'dispositivo/:id',
+    component: ShowDeviceComponent,
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {
     path: '**',
