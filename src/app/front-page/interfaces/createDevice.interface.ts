@@ -4,4 +4,5 @@ export interface CreateDevice {
   type: string;
   fabricante: string;
   description: string;
+  guid?: string;
 }

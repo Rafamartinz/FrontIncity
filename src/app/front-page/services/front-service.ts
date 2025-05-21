@@ -1,17 +1,34 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { CreateDevice } from '../interfaces/createDevice.interface';
-import { map, Observable, of, onErrorResumeNextWith, tap } from 'rxjs';
+import {
+  map,
+  Observable,
+  of,
+  onErrorResumeNextWith,
+  switchMap,
+  tap,
+} from 'rxjs';
+
+interface DeviceResponse {
+  data: CreateDevice[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 
 const baseurl = 'http://localhost:3000/api';
 
 @Injectable({ providedIn: 'root' })
 export class FrontService {
+  devices: any;
   constructor() {}
   http = inject(HttpClient);
 
   getEnvironmental() {
-    return this.http.get(`${baseurl}/environmental`);
+    const dataEnvi = this.http.get(`${baseurl}/environmental`);
+    return dataEnvi;
   }
   getTraffic() {
     return this.http.get(`${baseurl}/traffic`);
@@ -30,15 +47,19 @@ export class FrontService {
   }
 
   getDevices(
+    page: number,
+    limit: number,
     type: string,
     fecIni: string,
     endDate: string
-  ): Observable<CreateDevice[]> {
-    return this.http.get<CreateDevice[]>(`${baseurl}/devices/filter`, {
+  ): Observable<DeviceResponse> {
+    return this.http.get<DeviceResponse>(`${baseurl}/devices/filter`, {
       params: {
         fecIni: fecIni,
         endDate: endDate,
         type: type,
+        page: page,
+        limit: limit,
       },
     });
   }
@@ -57,5 +78,18 @@ export class FrontService {
 
   getDeviceById(id: string): Observable<CreateDevice> {
     return this.http.get<CreateDevice>(`${baseurl}/devices/${id}`);
+  }
+
+  getInfoFromDevice(deviceId: string): Observable<any[]> {
+    return this.getDeviceById(deviceId).pipe(
+      switchMap((device) => {
+        const url = `${baseurl}/${device.type}/${device.guid}`;
+        return this.http
+          .get<any>(url)
+          .pipe(
+            map((data) => (Array.isArray(data) ? data : data ? [data] : []))
+          );
+      })
+    );
   }
 }

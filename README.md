@@ -1,3 +1,4 @@
 //TODO
 
-martes mostrar info de un solo dispositivo,iconos del mapa con ruta a mostrar inod de este y hover muestra nombre del dispositivo
+Detalles estilos(scroll del menu),-paginacion back-
+Quiero que si no hay dispositivos con el camp de guid vacio que me de un error

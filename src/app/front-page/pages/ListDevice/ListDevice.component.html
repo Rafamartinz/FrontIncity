@@ -1,6 +1,6 @@
 <navbar></navbar>
 
-<div class="mt-10">
+<div class="mt-24">
   <h1 class="text-center text-3xl font-bold mb-6 text-gray-900">
     Listado de dispositivos
   </h1>
@@ -47,9 +47,9 @@
 <div class="flex flex-col items-center gap-6 max-w-7xl mx-auto px-4">
   <div class="flex flex-wrap justify-center items-center gap-6 w-full">
     <div
-      *ngFor="let device of pagedDevices; index as i"
+      *ngFor="let device of devices; index as i"
       (click)="viewDevice(device)"
-      class="w-80 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 p-5 flex flex-col justify-between"
+      class="w-80 h-64 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 p-5 flex flex-col justify-between"
     >
       <div class="space-y-2">
         <h3 class="text-xl font-semibold text-gray-800">
@@ -83,9 +83,9 @@
 
   <div class="mt-6">
     <app-pagination
-      [pages]="totalPages"
       [currentPage]="currentPage"
-      (pageChange)="setPage($event)"
+      [pages]="totalPagesCount"
+      (pageChange)="onPageChange($event)"
     ></app-pagination>
   </div>
 </div>

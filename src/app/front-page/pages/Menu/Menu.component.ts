@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   AfterViewInit,
   Component,
   ElementRef,
@@ -7,13 +6,14 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import mapboxgl, { Marker, Point } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { FrontService } from '../../services/front-service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { environment } from './../../../../environments/environment';
-import { ActivatedRoute, provideRouter } from '@angular/router';
 import { CreateDevice } from '../../interfaces/createDevice.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 mapboxgl.accessToken = environment.mapboxKey;
 
@@ -24,9 +24,9 @@ mapboxgl.accessToken = environment.mapboxKey;
   styles: [
     `
       #map {
-        width: 100vw;
-        height: 100vw;
-        max-height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
       }
     `,
   ],
@@ -34,7 +34,12 @@ mapboxgl.accessToken = environment.mapboxKey;
 export class MenuComponent implements AfterViewInit {
   @ViewChild('map', { static: false }) divElement!: ElementRef;
 
+  router = inject(Router);
+
   devices = signal<CreateDevice[]>([]);
+
+  DataMarker = signal<CreateDevice | null>(null);
+
   frontService = inject(FrontService);
 
   //Data mapa
@@ -75,22 +80,37 @@ export class MenuComponent implements AfterViewInit {
   ShowDevicesMap() {
     if (!this.map()) return;
     const map = this.map()!;
-
     const allDevices = this.devices();
 
     allDevices.forEach((device) => {
       const lat = device.lat;
       const lng = device.lgn;
 
-      new mapboxgl.Marker({
-        color:
-          '#' +
-          Math.floor(Math.random() * 0xffffff)
-            .toString(16)
-            .padStart(6, '0'),
-      })
-        .setLngLat([lat, lng])
+      let color = 'red';
+      if (device.type === 'traffic') {
+        color = 'blue';
+      } else if (device.type === 'environmental') {
+        color = 'green';
+      }
+
+      const marker = new mapboxgl.Marker({ color })
+        .setLngLat([lng, lat])
         .addTo(map);
+
+      marker.getElement().classList.add('cursor-pointer');
+
+      marker.getElement().addEventListener('click', () => {
+        this.viewDevice(device);
+      });
+
+      marker.getElement().addEventListener('mouseenter', () => {
+        if (!device) return;
+        this.DataMarker.set(device);
+      });
+
+      marker.getElement().addEventListener('mouseleave', () => {
+        this.DataMarker.set(null);
+      });
     });
   }
 
@@ -129,5 +149,9 @@ export class MenuComponent implements AfterViewInit {
 
     this.density.set(entradas - salidas);
     this.actions.set(actuaciones.size);
+  }
+
+  viewDevice(device: any) {
+    this.router.navigate(['/dispositivo', device._id]);
   }
 }

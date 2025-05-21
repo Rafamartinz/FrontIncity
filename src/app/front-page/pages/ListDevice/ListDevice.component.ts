@@ -21,17 +21,17 @@ export class ListDeviceComponent {
   fb = inject(FormBuilder);
   frontservice = inject(FrontService);
   router = inject(Router);
+  totalPagesCount = 0;
 
   //Pagination
   devices: any[] = [];
-  pagedDevices: any[] = [];
-  devicesPorpage = 10;
+  devicesPorpage = 5;
   currentPage = 1;
 
   FilterForm = this.fb.group({
-    type: ['', [Validators.required]],
-    fecIni: ['', [Validators.required]],
-    fecFin: ['', [Validators.required]],
+    type: [''],
+    fecIni: [''],
+    fecFin: [''],
   });
   deviceCache = new Map<string, any[]>();
 
@@ -43,41 +43,35 @@ export class ListDeviceComponent {
     return `${type}|${fecIni}|${fecFin}`;
   }
 
-  get totalPages(): number {
-    return Math.ceil(this.devices.length / this.devicesPorpage);
-  }
-
-  setPage(page: number) {
-    this.currentPage = page;
-    const start = (page - 1) * this.devicesPorpage;
-    const end = start + this.devicesPorpage;
-    this.pagedDevices = this.devices.slice(start, end);
-  }
-
-  ShowDevices() {
+  ShowDevices(page: number = 1) {
     const fecIniValue = this.FilterForm.controls['fecIni']?.value as string;
     const fecFinValue = this.FilterForm.controls['fecFin']?.value as string;
     const type = this.FilterForm.controls['type']?.value as string;
-
     const cacheKey = this.generateCacheKey(type, fecIniValue, fecFinValue);
 
     if (this.deviceCache.has(cacheKey)) {
       this.devices = this.deviceCache.get(cacheKey)!;
-      this.setPage(1);
+
       return;
     }
 
-    this.frontservice.getDevices(type, fecIniValue, fecFinValue).subscribe({
-      next: (devices) => {
-        this.deviceCache.set(cacheKey, devices); // Guardar en cache
-        this.devices = devices;
-        this.setPage(1);
-      },
-      error: (err) => {
-        console.error('Error al obtener los dispositivos', err);
-      },
-    });
+    this.frontservice
+      .getDevices(page, this.devicesPorpage, type, fecIniValue, fecFinValue)
+      .subscribe({
+        next: (response: any) => {
+          this.devices = response.data;
+          this.currentPage = Number(response.page);
+          this.totalPagesCount = Number(response.totalPages);
+        },
+        error: (err) => {
+          console.error('Error al obtener los dispositivos', err);
+        },
+      });
   }
+  onPageChange(page: number) {
+    this.ShowDevices(page);
+  }
+
   viewDevice(device: any) {
     this.router.navigate(['/dispositivo', device._id]);
   }
