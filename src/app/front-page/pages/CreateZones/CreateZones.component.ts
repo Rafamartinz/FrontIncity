@@ -3,10 +3,11 @@ import { NavbarComponent } from '../../../shared/components/navbar/navbar.compon
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FrontService } from '../../services/front-service';
 import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'create-zones',
-  imports: [NavbarComponent, ReactiveFormsModule, NgIf],
+  imports: [NavbarComponent, ReactiveFormsModule, NgIf, RouterLink],
   templateUrl: './CreateZones.component.html',
 })
 export class CreateZonesComponent implements OnInit {

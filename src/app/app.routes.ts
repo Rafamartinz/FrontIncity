@@ -10,6 +10,7 @@ import { ListDeviceComponent } from './front-page/pages/ListDevice/ListDevice.co
 import { DashboardPageComponent } from './front-page/pages/dashboard.page/dashboard.page.component';
 import { ShowDeviceComponent } from './front-page/pages/ShowDevice/ShowDevice.component';
 import { CreateZonesComponent } from './front-page/pages/CreateZones/CreateZones.component';
+import { ZoneToDeviceComponent } from './front-page/pages/ZoneToDevice/ZoneToDevice.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +46,11 @@ export const routes: Routes = [
   {
     path: 'zonas',
     component: CreateZonesComponent,
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
+  },
+  {
+    path: 'AddzoneAdvice',
+    component: ZoneToDeviceComponent,
     canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {

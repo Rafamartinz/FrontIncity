@@ -45,6 +45,8 @@ export class MenuComponent implements AfterViewInit {
   //Data mapa
   map = signal<mapboxgl.Map | null>(null);
   zoom = signal(14);
+  type: string = '';
+  markers: mapboxgl.Marker[] = [];
 
   //Data environmental
   environmentalData = signal<any>([]);
@@ -64,7 +66,7 @@ export class MenuComponent implements AfterViewInit {
     const map = new mapboxgl.Map({
       container: this.divElement.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-3.7849, 37.7796], // Jaén
+      center: [-3.7849, 37.7796], // Jaen
       zoom: this.zoom(),
     });
 
@@ -83,11 +85,20 @@ export class MenuComponent implements AfterViewInit {
     const map = this.map()!;
     const allDevices = this.devices();
 
-    allDevices.forEach((device) => {
+    // Eliminar marcadores previos
+    if (this.markers && this.markers.length > 0) {
+      this.markers.forEach((marker) => marker.remove());
+      this.markers = [];
+    }
+
+    const filteredDevices = this.type
+      ? allDevices.filter((device) => device.type === this.type)
+      : allDevices;
+
+    filteredDevices.forEach((device) => {
       const lat = device.lat;
       const lng = device.lgn;
 
-      //Dependiendo del tipo es de color o otro
       let color = 'red';
       if (device.type === 'traffic') {
         color = 'blue';
@@ -95,7 +106,6 @@ export class MenuComponent implements AfterViewInit {
         color = 'green';
       }
 
-      //Creo el market con esa latitud y longitud
       const marker = new mapboxgl.Marker({ color })
         .setLngLat([lng, lat])
         .addTo(map);
@@ -106,7 +116,6 @@ export class MenuComponent implements AfterViewInit {
         this.viewDevice(device);
       });
 
-      //Cuadno este el mouse encima o se quite se mete la info a el parafo y se meustra ,cuando se quita de va la info y no se muestra
       marker.getElement().addEventListener('mouseenter', () => {
         if (!device) return;
         this.DataMarker.set(device);
@@ -115,11 +124,25 @@ export class MenuComponent implements AfterViewInit {
       marker.getElement().addEventListener('mouseleave', () => {
         this.DataMarker.set(null);
       });
+
+      // Guardar el marker para poder eliminarlo luego
+      this.markers.push(marker);
     });
   }
 
   mapListeners(map: mapboxgl.Map) {
     this.map.set(map);
+  }
+
+  //Metodo necesario para cambiar el valor del select de filtro a string
+  ChangeType(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.setType(value);
+  }
+
+  setType(type: string) {
+    this.type = type;
+    this.ShowDevicesMap();
   }
 
   getTraffic() {

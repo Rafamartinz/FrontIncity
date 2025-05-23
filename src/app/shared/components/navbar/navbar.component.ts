@@ -17,9 +17,9 @@ export class NavbarComponent {
   //Las opciones que tiene el desplegable del navbar
   routes = [
     { path: '/create', title: 'Creador de dispositivos' },
+    { path: '/zonas', title: 'Creador de Zonas' },
     { path: '/ListDevice', title: 'Lista de dispositivos' },
     { path: '/dashboard', title: 'Dashboards' },
-    { path: '/zonas', title: 'Creador de Zonas' },
   ];
   logout() {
     this.authservice.logout();

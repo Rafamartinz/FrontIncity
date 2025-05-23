@@ -32,7 +32,7 @@
         type="text"
         formControlName="description"
         class="mt-2 w-full rounded-lg border border-gray-300 shadow-sm px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition"
-        placeholder="Ej: Camara seguridad"
+        placeholder="Ej: Zona residencial "
       />
     </div>
   </div>
@@ -40,9 +40,7 @@
   <div>
     <div class="mt-2 space-y-2">
       <label class="block font-semibold">Selecciona dispositivos:</label>
-      <span *ngIf="devicesFilter() === null">
-        <p>No hay dispositivos sin zona</p>
-      </span>
+
       @for (device of devicesFilter(); track device._id) {
       <label class="flex items-center space-x-2">
         <input
@@ -55,6 +53,9 @@
         <span>{{ device.description }}</span>
       </label>
       }
+      <span *ngIf="devicesFilter().length === 0"
+        >No hay dispositivos sin zona</span
+      >
     </div>
   </div>
 
@@ -64,4 +65,12 @@
   >
     Crear Zona
   </button>
+  <div class="mt-6 text-center">
+    <a
+      routerLink="/AddzoneAdvice"
+      class="inline-block text-gray-900 font-medium hover:underline"
+    >
+      Añadir zona creada a dispositivo
+    </a>
+  </div>
 </form>

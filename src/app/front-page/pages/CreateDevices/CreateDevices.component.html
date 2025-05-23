@@ -79,6 +79,21 @@
   </div>
 
   <div>
+    <label for="type" class="block text-sm font-semibold text-gray-700">
+      ¿Quieres que este en alguna zona?
+    </label>
+    <select
+      name="zone"
+      formControlName="zoneId"
+      class="mt-2 w-full rounded-lg border border-gray-300 shadow-sm px-3 py-2 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none transition"
+    >
+      <option *ngFor="let zone of zones()" [value]="zone._id">
+        {{ zone.description }}
+      </option>
+    </select>
+  </div>
+
+  <div>
     <label for="fabricante" class="block text-sm font-semibold text-gray-700">
       Fabricante
     </label>

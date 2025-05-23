@@ -9,6 +9,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { Zona } from '../interfaces/Zona';
 
 interface DeviceResponse {
   data: CreateDevice[];
@@ -38,11 +39,12 @@ export class FrontService {
     lat: number,
     lgn: number,
     type: string,
+    zoneId: string,
     fabricante: string,
     description: string,
     guid: string
   ): Observable<any> {
-    const body = { lat, lgn, type, fabricante, description, guid };
+    const body = { lat, lgn, type, zoneId, fabricante, description, guid };
     return this.http.post(`${baseurl}/devices`, body);
   }
 
@@ -91,8 +93,20 @@ export class FrontService {
       })
     );
   }
+
+  //Zones
   createZone(description: string, devices: string[]): Observable<any> {
     const body = { description, devices };
-    return this.http.post(`${baseurl}/zonas`, body);
+    return this.http.post(`${baseurl}/zones`, body);
+  }
+
+  getZones() {
+    return this.http.get<Zona[]>(`${baseurl}/zones`);
+  }
+
+  addDeviceIdToZone(zoneId: string, deviceId: string) {
+    return this.http.patch(`${baseurl}/zones/addDeviceId/${zoneId}`, {
+      deviceId,
+    });
   }
 }
