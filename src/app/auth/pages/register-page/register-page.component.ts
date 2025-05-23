@@ -28,6 +28,7 @@ export class RegisterPageComponent {
     fullName: ['', [Validators.required, Validators.maxLength(15)]],
   });
 
+  //Si es valido manda el formulario con al informacion necesaria si no salta un mensaje durante 3 seg
   onSubmit() {
     if (this.RegisterForm.invalid) {
       this.hasError.set(true);

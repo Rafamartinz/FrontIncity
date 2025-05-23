@@ -1,4 +1,3 @@
 //TODO
 
-Detalles estilos(scroll del menu),-paginacion back-
-Quiero que si no hay dispositivos con el camp de guid vacio que me de un error
+Zonas en el front /mostrar zonas en el mapa con sus dispositivos/crear zonas ,se asignen los ids

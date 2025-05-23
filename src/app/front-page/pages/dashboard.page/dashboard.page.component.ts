@@ -51,12 +51,14 @@ export class DashboardPageComponent implements AfterViewInit {
     let amountTemperature = 0;
     let amountPressure = 0;
 
+    //Meto todos los datos en una variable
     for (const item of data) {
       amountHumidity += item.humidity;
       amountTemperature += item.temperature;
       amountPressure += item.pressure;
     }
 
+    //Lo divido por el length para sacar la media
     const count = data.length;
     const avgHumidity = amountHumidity / count;
     const avgTemperature = amountTemperature / count;
@@ -66,6 +68,7 @@ export class DashboardPageComponent implements AfterViewInit {
     this.avgTemperature.set(avgTemperature);
 
     //Indice de calor
+    //Formula
     const vaporPressure =
       (avgHumidity / 100) *
       6.105 *
@@ -100,6 +103,7 @@ export class DashboardPageComponent implements AfterViewInit {
     let salidas = 0;
     const actuaciones = new Set();
 
+    //Sumo las entradas y salidas para luego restar y sacar "los vehiculos actuales"
     for (const item of data) {
       if (item.direction === 0) entradas++;
       if (item.direction === 1) salidas++;
@@ -110,14 +114,16 @@ export class DashboardPageComponent implements AfterViewInit {
     console.log(salidas);
 
     this.density.set(entradas - salidas);
+    //-Todos los vehiculos fuera o dentro (Contados por la matricula)
     this.actions.set(actuaciones.size);
   }
 
   //Chart
-
+  //Graficos de la temperatura de "hoy"
   createTemperatureChartDaily() {
     const data = this.environmentalData();
 
+    //Muestro de la date las horas  y minutos
     const labels = data.map((item: { date: any }) => {
       const date = new Date(item.date);
       return date.toLocaleTimeString([], {
@@ -171,6 +177,8 @@ export class DashboardPageComponent implements AfterViewInit {
 
     new Chart('temperatureChart', config);
   }
+
+  //Grafica de entradas y salidas de vehiculos
   createTrafficChartDaily() {
     const data = this.trafficData();
 

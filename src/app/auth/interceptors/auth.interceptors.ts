@@ -6,6 +6,7 @@ export function authInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) {
+  //Interceptor para antes de hacer llamadas a el backend
   const token = inject(AuthService).token();
 
   const newReq = req.clone({

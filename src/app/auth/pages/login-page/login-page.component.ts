@@ -24,6 +24,7 @@ export class LoginPageComponent {
   });
 
   onSubmit() {
+    //Manda el formulario si es valido con la informacion de inicio de sesion
     if (this.LoginForm.invalid) {
       this.hasError.set(true);
       setTimeout(() => {
@@ -38,6 +39,7 @@ export class LoginPageComponent {
     if (this.LoginForm.valid) {
       this.authService.login(email!, password!).subscribe({
         next: (isAuthenticated) => {
+          //Si inicia sesion le lleva a /menu (Menu principal)
           if (isAuthenticated) {
             this.router.navigateByUrl('/menu');
           } else {

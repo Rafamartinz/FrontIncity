@@ -84,12 +84,15 @@ export class FrontService {
     return this.getDeviceById(deviceId).pipe(
       switchMap((device) => {
         const url = `${baseurl}/${device.type}/${device.guid}`;
-        return this.http
-          .get<any>(url)
-          .pipe(
-            map((data) => (Array.isArray(data) ? data : data ? [data] : []))
-          );
+        return this.http.get<any>(url).pipe(
+          //Asegura que la salida siempre sea un array,vengan muchos o uno solo o null
+          map((data) => (Array.isArray(data) ? data : data ? [data] : []))
+        );
       })
     );
+  }
+  createZone(description: string, devices: string[]): Observable<any> {
+    const body = { description, devices };
+    return this.http.post(`${baseurl}/zonas`, body);
   }
 }

@@ -15,11 +15,13 @@ import { AuthService } from '../service/auth.service';
 })
 export class AuthenticatedGuard implements CanActivate {
   constructor(private AuthService: AuthService, private router: Router) {}
+  // Guard que redirige al login si el usuario no está autenticado
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
+    // Verifica el estado de autenticación usando el método checkStatus()
     return this.AuthService.checkStatus().pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {

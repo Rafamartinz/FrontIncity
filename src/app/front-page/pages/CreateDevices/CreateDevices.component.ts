@@ -26,8 +26,12 @@ export class CreateDevicesComponent {
     fabricante: ['', [Validators.required]],
     description: ['', [Validators.required]],
   });
+  formError = signal(false);
+  serverError = signal(false);
   Okmessage = '';
+  Nomessage = '';
 
+  //Envio el formulario si es valido
   onSubmit() {
     const {
       lat = 0,
@@ -36,42 +40,49 @@ export class CreateDevicesComponent {
       fabricante = '',
       description = '',
     } = this.CreateForm.value;
+    //El guid como se autogenera lo inicio aqui
     const guid: string = '';
 
+    this.Okmessage = '';
+    this.Nomessage = '';
+    this.formError.set(false);
+    this.serverError.set(false);
+
+    //Error del formulario
     if (this.CreateForm.invalid) {
-      this.hasError.set(true);
-      setTimeout(() => {
-        this.hasError.set(false);
-      }, 3000);
+      this.formError.set(true);
+      setTimeout(() => this.formError.set(false), 3000);
+      return;
     }
 
-    if (this.CreateForm.valid) {
-      this.frontService
-        .createDevices(lat!, lgn!, type!, fabricante!, description!, guid!)
-        .subscribe({
-          next: (next) => {
-            this.Okmessage = 'Registro completado';
-            setTimeout(() => {
-              this.Okmessage = '';
-            }, 3000);
-          },
-          error: (err) => {
-            this.hasError.set(true);
+    this.frontService
+      .createDevices(lat!, lgn!, type!, fabricante!, description!, guid!)
+      .subscribe({
+        next: (next) => {
+          this.Okmessage = 'Registro completado';
+          setTimeout(() => (this.Okmessage = ''), 3000);
+          this.CreateForm.reset({
+            lat: 0.0,
+            lgn: 0.0,
+            type: '',
+            fabricante: '',
+            description: '',
+          });
+        },
+        error: (err) => {
+          const mensaje =
+            //Error del server
+            err?.error?.message || 'No hay datos para poner a los dispositivos';
+          this.Nomessage = mensaje;
+          this.serverError.set(true);
 
-            setTimeout(() => {
-              this.hasError.set(false);
-              this.Okmessage = ' ';
-            }, 3000);
-          },
-        });
-      this.CreateForm.reset({
-        lat: 0.0,
-        lgn: 0.0,
-        type: '',
-        fabricante: '',
-        description: '',
+          setTimeout(() => {
+            this.Nomessage = '';
+            this.serverError.set(false);
+          }, 3000);
+        },
       });
-    }
+
     this.CreateForm.markAllAsTouched();
   }
 }

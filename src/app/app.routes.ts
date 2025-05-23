@@ -9,6 +9,7 @@ import { RegisterPageComponent } from './auth/pages/register-page/register-page.
 import { ListDeviceComponent } from './front-page/pages/ListDevice/ListDevice.component';
 import { DashboardPageComponent } from './front-page/pages/dashboard.page/dashboard.page.component';
 import { ShowDeviceComponent } from './front-page/pages/ShowDevice/ShowDevice.component';
+import { CreateZonesComponent } from './front-page/pages/CreateZones/CreateZones.component';
 
 export const routes: Routes = [
   {
@@ -39,6 +40,11 @@ export const routes: Routes = [
   {
     path: 'dispositivo/:id',
     component: ShowDeviceComponent,
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
+  },
+  {
+    path: 'zonas',
+    component: CreateZonesComponent,
     canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {

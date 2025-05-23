@@ -16,6 +16,7 @@ export class AuthService {
   private http = inject(HttpClient);
   router = inject(Router);
 
+  //Inicio de sesion
   login(email: string, password: string): Observable<boolean> {
     return this.http
       .post<AuthResponse>(`${baseurl}/auth/login`, {
@@ -23,12 +24,14 @@ export class AuthService {
         password: password,
       })
       .pipe(
+        //Mapeo para que toda la info del user se guarde (Token,name...)
         map((resp) => this.handleAuthSuccess(resp)),
 
-        tap((resp) => console.log('  RESPUESTA REGISTER:', resp))
+        tap((resp) => console.log('RESPUESTA REGISTER:', resp))
       );
   }
 
+  //Registro
   register(
     email: string,
     password: string,
@@ -47,6 +50,7 @@ export class AuthService {
   }
 
   checkStatus(): Observable<boolean> {
+    //SI en algun momento no esta el token cierra sesion
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -65,6 +69,7 @@ export class AuthService {
     );
   }
 
+  //Metodo para guardar la info
   private handleAuthSuccess({ token, user }: AuthResponse) {
     this._user.set(user);
     this._token.set(token);
@@ -72,6 +77,7 @@ export class AuthService {
     return true;
   }
 
+  //Borra el token
   logout() {
     localStorage.removeItem('token');
   }

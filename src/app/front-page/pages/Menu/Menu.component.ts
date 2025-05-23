@@ -77,6 +77,7 @@ export class MenuComponent implements AfterViewInit {
     });
   }
 
+  //Enseñar los dispositivos
   ShowDevicesMap() {
     if (!this.map()) return;
     const map = this.map()!;
@@ -86,6 +87,7 @@ export class MenuComponent implements AfterViewInit {
       const lat = device.lat;
       const lng = device.lgn;
 
+      //Dependiendo del tipo es de color o otro
       let color = 'red';
       if (device.type === 'traffic') {
         color = 'blue';
@@ -93,6 +95,7 @@ export class MenuComponent implements AfterViewInit {
         color = 'green';
       }
 
+      //Creo el market con esa latitud y longitud
       const marker = new mapboxgl.Marker({ color })
         .setLngLat([lng, lat])
         .addTo(map);
@@ -103,6 +106,7 @@ export class MenuComponent implements AfterViewInit {
         this.viewDevice(device);
       });
 
+      //Cuadno este el mouse encima o se quite se mete la info a el parafo y se meustra ,cuando se quita de va la info y no se muestra
       marker.getElement().addEventListener('mouseenter', () => {
         if (!device) return;
         this.DataMarker.set(device);
@@ -131,6 +135,7 @@ export class MenuComponent implements AfterViewInit {
     });
   }
 
+  //CAlculo de entradas y salidas
   calculateTrafficStats() {
     const data = this.trafficData();
 

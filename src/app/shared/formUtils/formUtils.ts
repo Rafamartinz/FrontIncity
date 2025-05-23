@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 
 export class FormUtils {
+  //Para las validaciones de los formularios creo mensajes personalizados dependiendo  del Validators
   static InvalidInput(form: FormGroup, value: string) {
     return form.controls[value].errors && form.controls[value].touched;
   }

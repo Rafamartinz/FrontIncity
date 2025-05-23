@@ -5,4 +5,5 @@ export interface CreateDevice {
   fabricante: string;
   description: string;
   guid?: string;
+  zoneId?: string;
 }

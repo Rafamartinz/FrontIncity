@@ -72,6 +72,7 @@ export class ListDeviceComponent {
     this.ShowDevices(page);
   }
 
+  //Lleva a el user a la info de ese dispositivo con ese _id
   viewDevice(device: any) {
     this.router.navigate(['/dispositivo', device._id]);
   }
