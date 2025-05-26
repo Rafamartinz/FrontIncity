@@ -58,7 +58,7 @@ export class FrontService {
     return this.http.get<DeviceResponse>(`${baseurl}/devices/filter`, {
       params: {
         fecIni: fecIni,
-        endDate: endDate,
+        EndDate: endDate,
         type: type,
         page: page,
         limit: limit,

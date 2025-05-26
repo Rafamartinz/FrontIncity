@@ -9,11 +9,12 @@ import {
 import mapboxgl from 'mapbox-gl';
 import { FrontService } from '../../services/front-service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-import { CommonModule, TitleCasePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { environment } from './../../../../environments/environment';
 import { CreateDevice } from '../../interfaces/createDevice.interface';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+
+import { Zona } from '../../interfaces/Zona';
 
 mapboxgl.accessToken = environment.mapboxKey;
 
@@ -42,11 +43,14 @@ export class MenuComponent implements AfterViewInit {
 
   frontService = inject(FrontService);
 
+  selectedZoneId: string = '';
+
   //Data mapa
   map = signal<mapboxgl.Map | null>(null);
   zoom = signal(14);
   type: string = '';
   markers: mapboxgl.Marker[] = [];
+  zones = signal<Zona[]>([]);
 
   //Data environmental
   environmentalData = signal<any>([]);
@@ -77,6 +81,8 @@ export class MenuComponent implements AfterViewInit {
       console.log(devices);
       this.ShowDevicesMap();
     });
+
+    this.getZones();
   }
 
   //Enseñar los dispositivos
@@ -91,10 +97,13 @@ export class MenuComponent implements AfterViewInit {
       this.markers = [];
     }
 
-    const filteredDevices = this.type
-      ? allDevices.filter((device) => device.type === this.type)
-      : allDevices;
-
+    const filteredDevices = allDevices.filter((device) => {
+      const matchType = this.type ? device.type === this.type : true;
+      const matchZone = this.selectedZoneId
+        ? device.zoneId === this.selectedZoneId
+        : true;
+      return matchType && matchZone;
+    });
     filteredDevices.forEach((device) => {
       const lat = device.lat;
       const lng = device.lgn;
@@ -127,6 +136,96 @@ export class MenuComponent implements AfterViewInit {
 
       // Guardar el marker para poder eliminarlo luego
       this.markers.push(marker);
+
+      /*Intento pintar mapas
+         if (!map.getSource('zona-jaen')) {
+        map.addSource('zona-jaen', {
+          type: 'geojson',
+          data: zonaSurJaenGeoJson,
+        });
+
+        map.addLayer({
+          id: 'zona-jaen-fill',
+          type: 'fill',
+          source: 'zona-jaen',
+          layout: {},
+          paint: {
+            'fill-color': '#ff6600', // Naranja
+            'fill-opacity': 0.4,
+          },
+        });
+
+        map.addLayer({
+          id: 'zona-jaen-outline',
+          type: 'line',
+          source: 'zona-jaen',
+          layout: {},
+          paint: {
+            'line-color': '#ff6600',
+            'line-width': 2,
+          },
+        });
+      }
+
+        // Zona Sur
+      if (!map.getSource('zonasur')) {
+        map.addSource('zonasur', {
+          type: 'geojson',
+          data: zonaNorteGeoJSON,
+        });
+
+        map.addLayer({
+          id: 'zonasur-fill',
+          type: 'fill',
+          source: 'zonasur',
+          layout: {},
+          paint: {
+            'fill-color': '#00cc66', // Verde
+            'fill-opacity': 0.4,
+          },
+        });
+
+        map.addLayer({
+          id: 'zonasur-outline',
+          type: 'line',
+          source: 'zonasur',
+          layout: {},
+          paint: {
+            'line-color': '#00cc66',
+            'line-width': 2,
+          },
+        });
+      }
+
+      // Zona Oeste
+      if (!map.getSource('zonajaenOeste')) {
+        map.addSource('zonajaenOeste', {
+          type: 'geojson',
+          data: zonaSurOesteGeoJSON,
+        });
+
+        map.addLayer({
+          id: 'zonajaenOeste-fill',
+          type: 'fill',
+          source: 'zonajaenOeste',
+          layout: {},
+          paint: {
+            'fill-color': '#3366ff', // Azul
+            'fill-opacity': 0.4,
+          },
+        });
+
+        map.addLayer({
+          id: 'zonajaenOeste-outline',
+          type: 'line',
+          source: 'zonajaenOeste',
+          layout: {},
+          paint: {
+            'line-color': '#3366ff',
+            'line-width': 2,
+          },
+        });
+      }*/
     });
   }
 
@@ -140,6 +239,7 @@ export class MenuComponent implements AfterViewInit {
     this.setType(value);
   }
 
+  //Setteo el valor de lo que pongo en el filtro a el valor de type
   setType(type: string) {
     this.type = type;
     this.ShowDevicesMap();
@@ -166,6 +266,7 @@ export class MenuComponent implements AfterViewInit {
     let salidas = 0;
     const actuaciones = new Set();
 
+    //Sumo todos las direcciones de entrada y salida y la resta es el valor de vehiculos actuales
     for (const item of data) {
       if (item.direction === 0) entradas++;
       if (item.direction === 1) salidas++;
@@ -179,7 +280,30 @@ export class MenuComponent implements AfterViewInit {
     this.actions.set(actuaciones.size);
   }
 
+  //Rutas para cuando hago click en un device
   viewDevice(device: any) {
     this.router.navigate(['/dispositivo', device._id]);
+  }
+
+  getZones() {
+    this.frontService.getZones().subscribe({
+      next: (zones) => this.zones.set(zones),
+    });
+  }
+
+  //Cambio el valor del select a selectedZoneID que es el que utilizo en el metodo para mostrar el mapa
+
+  onZoneChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const zoneid = select.value;
+
+    this.selectedZoneId = zoneid;
+    this.ShowDevicesMap();
+  }
+
+  //Boolean si es true se muestra el panel de filtros
+  showFilters = false;
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

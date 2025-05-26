@@ -43,9 +43,7 @@ export class ShowDeviceComponent implements OnInit {
         this.device = data;
 
         this.createTrafficChart();
-
         this.createTemperatureChart();
-
         this.getEnvironmentalInfoDevice();
         this.getTrafficInfoDevice();
       });
@@ -65,6 +63,8 @@ export class ShowDeviceComponent implements OnInit {
   }
 
   calculateTrafficStats() {
+    //Seria mas util si tuviese varios datos del mismo dispositivo
+
     const data = this.trafficData();
 
     if (Array.isArray(data)) {
@@ -97,6 +97,7 @@ export class ShowDeviceComponent implements OnInit {
     });
   }
   calculateAverage() {
+    //Seria mas util si tuviese varios datos del mismo dispositivo
     const data = this.environmentalData();
     let amountHumidity = 0;
     let amountTemperature = 0;

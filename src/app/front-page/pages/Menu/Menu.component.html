@@ -7,7 +7,7 @@
 >
   <!-- Mostrar info de medio ambiente -->
   <section
-    class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 w-[340px]"
+    class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 w-[240px]"
   >
     <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
       Medio Ambiente
@@ -55,7 +55,7 @@
   <!-- Mostrar info de trafico -->
 
   <section
-    class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 w-[340px]"
+    class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 w-[240px]"
   >
     <h3 class="text-lg font-semibold mb-2 flex items-center gap-2">
       Trafico
@@ -89,22 +89,46 @@
   </section>
 </div>
 
-<!-- Filtro mostrar dispositivos traffic/environmental -->
+<!-- Filtro mostrar dispositivos traffic/environmental  ...Zonas-->
+
+<button
+  class="absolute top-40 right-10 bg-gray-900 text-white px-4 py-2 rounded-xl shadow-md hover:bg-gray-800 transition"
+  (click)="toggleFilters()"
+>
+  {{ showFilters ? "Ocultar filtros" : "Mostrar filtros" }}
+</button>
+
 <div
-  class="absolute left-10 flex flex-col gap-6 z-10 max-h-[90vh] text-gray-800 font-sans"
-  style="top: 500px"
+  *ngIf="showFilters"
+  class="absolute top-[220px] right-10 w-[220px] flex flex-col gap-6 z-20 max-h-[60vh] overflow-y-auto font-sans transition-all duration-300"
 >
   <section
-    class="bg-white rounded-2xl p-5 shadow-md border border-gray-200 flex items-center gap-4"
+    class="bg-white rounded-2xl p-5 shadow-lg border border-gray-200 flex flex-col gap-4"
   >
-    Tipo:
-    <select (change)="ChangeType($event)">
+    <label class="font-semibold">Tipo:</label>
+    <select
+      (change)="ChangeType($event)"
+      class="rounded-lg border border-gray-800 px-3 py-2 shadow-sm focus:ring-2 focus:ring-gray-800"
+    >
       <option value="">Todos</option>
       <option value="traffic">Tráfico</option>
       <option value="environmental">Medio ambiente</option>
     </select>
+
+    <label class="font-semibold">Zona:</label>
+    <select
+      name="zone"
+      class="rounded-lg border border-gray-800 px-3 py-2 shadow-sm focus:ring-2 focus:ring-gray-800 focus:outline-none"
+      (change)="onZoneChange($event)"
+    >
+      <option value="">Todas las zonas</option>
+      <option *ngFor="let zone of zones()" [value]="zone._id">
+        {{ zone.description }}
+      </option>
+    </select>
   </section>
 </div>
+
 <div
   class="absolute top-20 right-10 flex flex-col gap-6 z-10 max-h-[90vh] text-gray-800 font-sans"
 >
@@ -131,7 +155,7 @@
 
 <div
   *ngIf="DataMarker()"
-  class="absolute top-48 right-10 flex flex-col gap-4 z-10 max-h-[80vh] text-gray-800 font-sans"
+  class="absolute bottom-20 left-10 flex flex-col gap-4 z-10 max-h-[80vh] text-gray-800 font-sans"
 >
   <section
     class="bg-white cursor-pointer rounded-xl p-3 shadow-sm border border-gray-200 max-w-60 text-sm"

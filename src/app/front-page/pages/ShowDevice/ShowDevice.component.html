@@ -1,141 +1,186 @@
 <navbar />
 
-<div class="pb-13 mb-12">ignorar</div>
+<div class="pb-13 mb-16">ignorar</div>
 
-<div *ngIf="device?.type === 'environmental'">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-    <div
-      class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
-    >
-      <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <circle cx="12" cy="5" r="1.5" />
-          <circle cx="12" cy="12" r="1.5" />
-          <circle cx="12" cy="19" r="1.5" />
-        </svg>
-      </button>
-      <div class="text-sm text-gray-600 mb-2">Humedad Promedio</div>
-      <div class="text-3xl font-semibold text-gray-800">
-        {{ avgHumidity() | number : "1.0-2" }}%
-      </div>
-    </div>
+<div class="items-center justify-center px-4">
+  <h1
+    class="text-3xl font-extrabold text-gray-900 flex items-center justify-center gap-2 m-10"
+  >
+    Informacion del dispositivo
+  </h1>
 
-    <div
-      class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
-    >
-      <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <circle cx="12" cy="5" r="1.5" />
-          <circle cx="12" cy="12" r="1.5" />
-          <circle cx="12" cy="19" r="1.5" />
-        </svg>
-      </button>
-      <div class="text-sm text-gray-600 mb-2">Presión Promedio</div>
-      <div class="text-3xl font-semibold text-gray-800">
-        {{ avgPressure() | number : "1.0-2" }} hPa
-      </div>
-    </div>
-
-    <div
-      class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
-    >
-      <div class="text-sm text-gray-600 mb-2">Temperatura Promedio</div>
-      <div class="text-3xl font-semibold text-gray-800">
-        {{ avgTemperature() | number : "1.0-2" }}°C
-      </div>
-    </div>
-
-    <div
-      class="col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6"
-    >
+  <div *ngIf="device?.type === 'environmental'" class="w-full max-w-6xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-10">
       <div
-        class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
+        class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
       >
-        <div class="flex justify-between items-start mb-4">
-          <h2 class="text-sm font-semibold text-gray-700">
-            Evolución de la temperatura diaria
-          </h2>
-          <button class="text-gray-400 hover:text-gray-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="5" r="1.5" />
-              <circle cx="12" cy="12" r="1.5" />
-              <circle cx="12" cy="19" r="1.5" />
-            </svg>
-          </button>
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+        <div class="text-sm text-gray-600 mb-2">Humedad</div>
+        <div class="text-3xl font-semibold text-gray-800">
+          {{ avgHumidity() | number : "1.0-2" }}%
         </div>
-        <canvas id="temperatureChart" height="120"></canvas>
+      </div>
+
+      <div
+        class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
+      >
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+        <div class="text-sm text-gray-600 mb-2">Presión</div>
+        <div class="text-3xl font-semibold text-gray-800">
+          {{ avgPressure() | number : "1.0-2" }} hPa
+        </div>
+      </div>
+
+      <div
+        class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
+      >
+        <div class="text-sm text-gray-600 mb-2">Temperatura</div>
+        <div class="text-3xl font-semibold text-gray-800">
+          {{ avgTemperature() | number : "1.0-2" }}°C
+        </div>
+      </div>
+
+      <div
+        class="col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        <div
+          class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
+        >
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-sm font-semibold text-gray-700">
+              Evolución de la temperatura diaria
+            </h2>
+            <button class="text-gray-400 hover:text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="5" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+                <circle cx="12" cy="19" r="1.5" />
+              </svg>
+            </button>
+          </div>
+          <canvas id="temperatureChart" height="120"></canvas>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="device?.type === 'traffic'">
-  <div class="center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+  <div *ngIf="device?.type === 'traffic'" class="w-full max-w-6xl">
     <div
-      class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
-    >
-      <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <circle cx="12" cy="5" r="1.5" />
-          <circle cx="12" cy="12" r="1.5" />
-          <circle cx="12" cy="19" r="1.5" />
-        </svg>
-      </button>
-      <div class="text-sm text-gray-600 mb-2">Actuaciones</div>
-      <div class="text-3xl font-semibold text-gray-800">{{ actions() }}</div>
-    </div>
-
-    <div
-      class="col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6"
+      class="center grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4"
     >
       <div
-        class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
+        class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
       >
-        <div class="flex justify-between items-start mb-4">
-          <h2 class="text-sm font-semibold text-gray-700">
-            Evolución de el trafico diario
-          </h2>
-          <button class="text-gray-400 hover:text-gray-600">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="5" r="1.5" />
-              <circle cx="12" cy="12" r="1.5" />
-              <circle cx="12" cy="19" r="1.5" />
-            </svg>
-          </button>
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+        <div class="text-sm text-gray-600 mb-2">Actuaciones</div>
+        <div class="text-3xl font-semibold text-gray-800">{{ actions() }}</div>
+      </div>
+
+      <div
+        class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
+      >
+        <button
+          class="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+        <div class="text-sm text-gray-600 mb-2">Vehiculos actuales</div>
+        <div class="text-3xl font-semibold text-gray-800">{{ density() }}</div>
+      </div>
+
+      <div
+        class="col-span-1 sm:col-span-2 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        <div
+          class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
+        >
+          <div class="flex justify-between items-start mb-4">
+            <h2 class="text-sm font-semibold text-gray-700">
+              Evolución de el trafico diario
+            </h2>
+            <button class="text-gray-400 hover:text-gray-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <circle cx="12" cy="5" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+                <circle cx="12" cy="19" r="1.5" />
+              </svg>
+            </button>
+          </div>
+          <canvas id="trafficChart" height="120"></canvas>
         </div>
-        <canvas id="trafficChart" height="120"></canvas>
       </div>
     </div>
   </div>
+  <div>
+    <button
+      (click)="goBack()"
+      class="float-right mr-10 rounded-xl shadow-sm border border-gray-200 p-4 hover:bg-gray-300"
+    >
+      Cerrar
+    </button>
+  </div>
 </div>
-<div></div>

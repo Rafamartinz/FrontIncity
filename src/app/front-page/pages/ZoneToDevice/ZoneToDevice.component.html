@@ -1,7 +1,9 @@
 <navbar></navbar>
 <div class="pb-13 mb-12">ignorar</div>
 
-<h3 class="text-2xl font-semibold mb-6 text-gray-800">
+<h3
+  class="text-3xl font-extrabold text-gray-900 flex items-center justify-center gap-2 mb-10"
+>
   Asignar dispositivo a zona
 </h3>
 
@@ -17,7 +19,7 @@
       class="border border-gray-300 rounded-md py-1 px-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
     >
       <option *ngFor="let zone of zones" [value]="zone._id">
-        {{ zone.name }}
+        {{ zone.description }}
       </option>
     </select>
 

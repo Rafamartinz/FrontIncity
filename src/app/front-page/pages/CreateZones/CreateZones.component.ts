@@ -1,6 +1,14 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+
 import { FrontService } from '../../services/front-service';
 import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -13,14 +21,15 @@ import { RouterLink } from '@angular/router';
 export class CreateZonesComponent implements OnInit {
   fb = inject(FormBuilder);
   frontservice = inject(FrontService);
-  devicesFilter = signal<any[]>([]);
 
   CreateForm = this.fb.group({
     description: ['', [Validators.required]],
     devices: [<string[]>[], [Validators.required]],
   });
 
-  ngOnInit(): void {
+  devicesFilter = signal<any[]>([]);
+
+  ngOnInit() {
     this.getDevices();
   }
 
@@ -52,9 +61,6 @@ export class CreateZonesComponent implements OnInit {
   GetIdFromDevice(event: Event) {
     const checkbox = event.target as HTMLInputElement;
     let devicesZone = this.CreateForm.get('devices')?.value ?? [];
-
-    // Eliminar posibles valores vacíos (por si acaso)
-    devicesZone = devicesZone.filter((id) => id !== '');
 
     if (checkbox.checked) {
       if (!devicesZone.includes(checkbox.value)) {
