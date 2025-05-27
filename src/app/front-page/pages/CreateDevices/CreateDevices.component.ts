@@ -23,10 +23,15 @@ export class CreateDevicesComponent {
   private fb = inject(FormBuilder);
   hasError = signal(false);
   frontService = inject(FrontService);
+  zones = signal<Zona[]>([]);
 
   CreateForm = this.fb.group({
-    lat: [0.0, [Validators.required, Validators.pattern(/^[-+]?\d+(\.\d+)?$/)]],
-    lgn: [0.0, [Validators.required, Validators.pattern(/^[-+]?\d+(\.\d+)?$/)]],
+    lat: [0.0, [Validators.required, Validators.min(-90), Validators.max(90)]],
+    lgn: [
+      0.0,
+      [Validators.required, Validators.min(-180), Validators.max(180)],
+    ],
+
     type: ['', [Validators.required]],
     zoneId: [''],
     fabricante: ['', [Validators.required]],
@@ -78,7 +83,7 @@ export class CreateDevicesComponent {
       )
       .subscribe({
         next: (createdDevice) => {
-          this.Okmessage = 'Registro completado';
+          this.Okmessage = 'Dispositivo creado correctamente';
           setTimeout(() => (this.Okmessage = ''), 3000);
           this.CreateForm.reset({
             lat: 0.0,
@@ -119,8 +124,6 @@ export class CreateDevicesComponent {
 
     this.CreateForm.markAllAsTouched();
   }
-
-  zones = signal<Zona[]>([]);
 
   getZones() {
     this.frontService.getZones().subscribe({

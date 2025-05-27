@@ -15,21 +15,25 @@ export class FormUtils {
       switch (key) {
         case 'required':
           return 'Este campo es obligatorio';
-          break;
+
         case 'email':
           return 'Debe de ser un email correcto';
-          break;
+
         case 'minlength':
           return 'No cumple con el minimo de caracteres necesarios';
-          break;
 
         case 'maxlength':
           return 'Te has pasado de caracteres ';
-          break;
 
-        case 'pattern':
-          return 'Las coordenadas no son adecuadas ';
-          break;
+        case 'min':
+        case 'max':
+          if (value === 'lat') {
+            return 'La latitud debe estar entre -90 y 90';
+          } else if (value === 'lgn') {
+            return 'La longitud debe estar entre -180 y 180';
+          } else {
+            return 'El valor está fuera del rango permitido';
+          }
         default:
           break;
       }

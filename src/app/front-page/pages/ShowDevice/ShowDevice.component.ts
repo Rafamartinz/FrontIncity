@@ -5,6 +5,7 @@ import { FrontService } from '../../services/front-service';
 import { CommonModule } from '@angular/common';
 import { CreateDevice } from '../../interfaces/createDevice.interface';
 import { Chart } from 'chart.js';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'show-device',
@@ -29,10 +30,10 @@ export class ShowDeviceComponent implements OnInit {
   trafficData = signal<any>([]);
   density: any = signal(null);
   actions: any = signal(null);
-  constructor(private router: Router) {}
+  constructor(private location: Location) {}
 
   goBack() {
-    this.router.navigate(['/ListDevice']);
+    this.location.back();
   }
 
   ngOnInit(): void {

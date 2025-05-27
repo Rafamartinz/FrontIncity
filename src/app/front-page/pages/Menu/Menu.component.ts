@@ -137,7 +137,7 @@ export class MenuComponent implements AfterViewInit {
       // Guardar el marker para poder eliminarlo luego
       this.markers.push(marker);
 
-      /*Intento pintar mapas
+      /*Intento,pintar mapas
          if (!map.getSource('zona-jaen')) {
         map.addSource('zona-jaen', {
           type: 'geojson',
@@ -303,7 +303,7 @@ export class MenuComponent implements AfterViewInit {
 
   //Boolean si es true se muestra el panel de filtros
   showFilters = false;
-  toggleFilters() {
+  ShowFilters() {
     this.showFilters = !this.showFilters;
   }
 }

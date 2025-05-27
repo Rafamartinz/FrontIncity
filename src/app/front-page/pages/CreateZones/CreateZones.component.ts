@@ -70,7 +70,9 @@ export class CreateZonesComponent implements OnInit {
       devicesZone = devicesZone.filter((id) => id !== checkbox.value);
     }
 
+    /* Actualiza el campo devices del formulario con la nueva lista de IDs. */
     this.CreateForm.patchValue({ devices: devicesZone });
+    /* Llama a updateValueAndValidity  para que Angular actualice el estado del campo  si era obligatorio y ahora está vacío, se marca como inválido   */
     this.CreateForm.get('devices')?.updateValueAndValidity();
   }
 }

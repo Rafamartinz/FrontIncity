@@ -74,10 +74,10 @@ export class DashboardPageComponent implements AfterViewInit {
       6.105 *
       Math.exp((17.27 * avgTemperature) / (237.7 + avgTemperature));
 
-    const heatIndex =
+    const heat =
       avgTemperature + 0.33 * avgHumidity - 0.7 * vaporPressure - 4.0;
 
-    this.avgHeat.set(heatIndex);
+    this.avgHeat.set(heat);
   }
 
   //Trafico

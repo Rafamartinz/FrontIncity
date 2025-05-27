@@ -22,7 +22,7 @@
         <circle cx="12" cy="19" r="1.5" />
       </svg>
     </button>
-    <div class="text-sm text-gray-600 mb-2">Humedad Promedio</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">Humedad Promedio</div>
     <div class="text-3xl font-semibold text-gray-800">
       {{ avgHumidity() | number : "1.0-2" }}%
     </div>
@@ -44,7 +44,7 @@
         <circle cx="12" cy="19" r="1.5" />
       </svg>
     </button>
-    <div class="text-sm text-gray-600 mb-2">Presión Promedio</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">Presión Promedio</div>
     <div class="text-3xl font-semibold text-gray-800">
       {{ avgPressure() | number : "1.0-2" }} hPa
     </div>
@@ -53,7 +53,7 @@
   <div
     class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
   >
-    <div class="text-sm text-gray-600 mb-2">Temperatura Promedio</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">Temperatura Promedio</div>
     <div class="text-3xl font-semibold text-gray-800">
       {{ avgTemperature() | number : "1.0-2" }}°C
     </div>
@@ -76,7 +76,9 @@
       </svg>
     </button>
 
-    <div class="text-sm text-gray-600 mb-2">Índice de Calor Promedio</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">
+      Índice de Calor Promedio
+    </div>
     <div class="text-3xl font-semibold text-gray-800">
       {{ avgHeat() | number : "1.0-2" }}°C
     </div>
@@ -98,7 +100,7 @@
         <circle cx="12" cy="19" r="1.5" />
       </svg>
     </button>
-    <div class="text-sm text-gray-600 mb-2">Actuaciones</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">Actuaciones</div>
     <div class="text-3xl font-semibold text-gray-800">{{ actions() }}</div>
   </div>
 
@@ -118,7 +120,7 @@
         <circle cx="12" cy="19" r="1.5" />
       </svg>
     </button>
-    <div class="text-sm text-gray-600 mb-2">Densidad Vehicular</div>
+    <div class="font-bold text-sm text-gray-600 mb-2">Densidad Vehicular</div>
     <div class="text-3xl font-semibold text-gray-800">{{ density() }}</div>
   </div>
 
@@ -129,7 +131,7 @@
       class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
     >
       <div class="flex justify-between items-start mb-4">
-        <h2 class="text-sm font-semibold text-gray-700">
+        <h2 class="text-sm font-bold text-gray-700">
           Evolución de la temperatura diaria
         </h2>
         <button class="text-gray-400 hover:text-gray-600">
@@ -153,7 +155,7 @@
       class="bg-gray-50 rounded-xl shadow-sm border border-gray-200 p-4 w-full"
     >
       <div class="flex justify-between items-start mb-4">
-        <h2 class="text-sm font-semibold text-gray-700">
+        <h2 class="text-sm font-bold text-gray-700">
           Entradas y salidas por hora
         </h2>
         <button class="text-gray-400 hover:text-gray-600">
