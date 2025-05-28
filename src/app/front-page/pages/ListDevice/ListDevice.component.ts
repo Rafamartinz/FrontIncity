@@ -34,6 +34,9 @@ export class ListDeviceComponent {
     fecFin: [''],
   });
   deviceCache = new Map<string, any[]>();
+  constructor() {
+    this.ShowDevices(1);
+  }
 
   private generateCacheKey(
     type: string,
@@ -75,6 +78,10 @@ export class ListDeviceComponent {
   //Lleva a el user a la info de ese dispositivo con ese _id
   viewDevice(device: any) {
     this.router.navigate(['/dispositivo', device._id]);
+  }
+
+  modifyDevice(device: any) {
+    this.router.navigate(['/modify', device._id]);
   }
   /*
   deleteDevice(id: string) {

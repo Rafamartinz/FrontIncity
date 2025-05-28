@@ -11,6 +11,7 @@ import { DashboardPageComponent } from './front-page/pages/dashboard.page/dashbo
 import { ShowDeviceComponent } from './front-page/pages/ShowDevice/ShowDevice.component';
 import { CreateZonesComponent } from './front-page/pages/CreateZones/CreateZones.component';
 import { ZoneToDeviceComponent } from './front-page/pages/ZoneToDevice/ZoneToDevice.component';
+import { ModifyDeviceComponent } from './front-page/pages/ModifyDevice/ModifyDevice.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,11 @@ export const routes: Routes = [
   {
     path: 'AddzoneAdvice',
     component: ZoneToDeviceComponent,
+    canActivate: [AuthenticatedGuard], // Solo si esta autenticado
+  },
+  {
+    path: 'modify/:id',
+    component: ModifyDeviceComponent,
     canActivate: [AuthenticatedGuard], // Solo si esta autenticado
   },
   {

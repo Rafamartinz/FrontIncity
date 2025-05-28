@@ -10,17 +10,18 @@ import { NavbarComponent } from '../../../shared/components/navbar/navbar.compon
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FrontService } from '../../services/front-service';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'create-zones',
-  imports: [NavbarComponent, ReactiveFormsModule, NgIf, RouterLink],
+  imports: [NavbarComponent, ReactiveFormsModule, NgIf, RouterLink, NgFor],
   templateUrl: './CreateZones.component.html',
 })
 export class CreateZonesComponent implements OnInit {
   fb = inject(FormBuilder);
   frontservice = inject(FrontService);
+  showDevices = false;
 
   CreateForm = this.fb.group({
     description: ['', [Validators.required]],
@@ -72,7 +73,7 @@ export class CreateZonesComponent implements OnInit {
 
     /* Actualiza el campo devices del formulario con la nueva lista de IDs. */
     this.CreateForm.patchValue({ devices: devicesZone });
-    /* Llama a updateValueAndValidity  para que Angular actualice el estado del campo  si era obligatorio y ahora está vacío, se marca como inválido   */
+    /* Llama a updateValueAndValidity  para que   actualice el estado del campo si era obligatorio y ahora está vacio, se marca como invalido   */
     this.CreateForm.get('devices')?.updateValueAndValidity();
   }
 }

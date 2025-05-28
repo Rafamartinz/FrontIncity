@@ -37,25 +37,35 @@
     </div>
   </div>
 
-  <div>
-    <div class="mt-2 space-y-2">
-      <label class="block font-semibold">Selecciona dispositivos:</label>
+  <div class="mt-4">
+    <label class="block font-semibold mb-2">Selecciona dispositivos:</label>
 
-      @for (device of devicesFilter(); track device._id) {
-      <label class="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          [value]="device._id"
-          (change)="GetIdFromDevice($event)"
-          [checked]="CreateForm.value.devices?.includes(device._id) ?? false"
-        />
+    <button
+      type="button"
+      class="mb-2 px-4 py-2 text-sm bg-gray-100 text-gray-800 rounded hover:bg-gray-200 transition"
+      (click)="showDevices = !showDevices"
+    >
+      {{ showDevices ? "Ocultar dispositivos" : "Mostrar dispositivos" }}
+    </button>
 
-        <span>{{ device.description }}</span>
-      </label>
-      }
-      <span *ngIf="devicesFilter().length === 0"
-        >No hay dispositivos sin zona</span
-      >
+    <div
+      *ngIf="showDevices"
+      class="max-h-64 overflow-y-auto border rounded-lg p-4 bg-white shadow-sm space-y-2"
+    >
+      <ul *ngFor="let device of devicesFilter()">
+        <li class="flex items-center justify-between">
+          <span class="text-gray-700 text-sm">{{ device.description }}</span>
+          <input
+            type="checkbox"
+            [value]="device._id"
+            (change)="GetIdFromDevice($event)"
+            [checked]="CreateForm.value.devices?.includes(device._id) ?? false"
+          />
+        </li>
+      </ul>
+      <span *ngIf="devicesFilter().length === 0" class="text-gray-500 text-sm">
+        No hay dispositivos sin zona
+      </span>
     </div>
   </div>
 

@@ -10,6 +10,7 @@ import {
   tap,
 } from 'rxjs';
 import { Zona } from '../interfaces/Zona';
+import { createWatch } from '@angular/core/primitives/signals';
 
 interface DeviceResponse {
   data: CreateDevice[];
@@ -108,5 +109,30 @@ export class FrontService {
     return this.http.patch(`${baseurl}/zones/addDeviceId/${zoneId}`, {
       deviceId,
     });
+  }
+
+  modifyDevice(
+    deviceId: string,
+    lat: number,
+    lgn: number,
+    type: string,
+    fabricante: string,
+    description: string,
+    zoneId?: string,
+    guid?: string,
+    createdAt?: number
+  ) {
+    const body = {
+      lat,
+      lgn,
+      type,
+      zoneId,
+      fabricante,
+      description,
+      guid,
+      createdAt,
+    };
+
+    return this.http.put(`${baseurl}/devices/modifyDevice/${deviceId}`, body);
   }
 }
