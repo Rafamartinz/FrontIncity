@@ -5,7 +5,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormUtils } from '../../../shared/formUtils/formUtils';
 import { FrontService } from '../../services/front-service';
 import { Zona } from '../../interfaces/Zona';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-modify-device',
@@ -19,6 +19,7 @@ export class ModifyDeviceComponent {
   frontService = inject(FrontService);
   zones = signal<Zona[]>([]);
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   formError = signal(false);
   serverError = signal(false);
@@ -37,7 +38,7 @@ export class ModifyDeviceComponent {
       [Validators.required, Validators.min(-180), Validators.max(180)],
     ],
     type: ['', [Validators.required]],
-    zoneId: ['', [Validators.required]],
+    zoneId: [''],
     fabricante: ['', [Validators.required]],
     description: ['', [Validators.required]],
   });
@@ -49,10 +50,11 @@ export class ModifyDeviceComponent {
       type = '',
       fabricante = '',
       description = '',
+      zoneId = '',
     } = this.ModifyForm.value;
     //El guid como se autogenera lo inicio aqui
     const guid: string = '';
-    const zoneId: string = '';
+    console.log(this.ModifyForm.value);
     const createdAt: any = 0;
 
     this.Okmessage = '';
@@ -66,6 +68,9 @@ export class ModifyDeviceComponent {
       setTimeout(() => this.formError.set(false), 3000);
       return;
     }
+    if (this.ModifyForm.valid) {
+      this.router.navigate(['/ListDevice']);
+    }
 
     this.frontService
       .modifyDevice(
@@ -73,9 +78,9 @@ export class ModifyDeviceComponent {
         lat!,
         lgn!,
         type!,
-        zoneId!,
         fabricante!,
         description!,
+        zoneId!,
         guid!,
         createdAt!
       )

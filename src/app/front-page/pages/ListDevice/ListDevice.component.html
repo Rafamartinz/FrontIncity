@@ -50,7 +50,7 @@
       *ngFor="let device of devices; index as i"
       class="w-80 h-64 bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 p-5 flex flex-col justify-between"
     >
-      <div class="space-y-2" (click)="viewDevice(device)">
+      <div class="space-y-2 cursor-pointer" (click)="viewDevice(device)">
         <h3 class="text-xl font-semibold text-gray-800">
           {{ device.description || "Dispositivo" }}
         </h3>

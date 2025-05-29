@@ -54,6 +54,19 @@
     class="bg-gray-50 relative rounded-xl shadow-sm border border-gray-200 p-4"
   >
     <div class="font-bold text-sm text-gray-700 mb-2">Temperatura Promedio</div>
+    <button class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <circle cx="12" cy="5" r="1.5" />
+        <circle cx="12" cy="12" r="1.5" />
+        <circle cx="12" cy="19" r="1.5" />
+      </svg>
+    </button>
     <div class="text-3xl font-semibold text-gray-900">
       {{ avgTemperature() | number : "1.0-2" }}°C
     </div>
@@ -158,13 +171,14 @@
         <h2 class="text-sm font-bold text-gray-800">
           Entradas y salidas por hora
         </h2>
+
         <button class="text-gray-400 hover:text-gray-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="urrentColor"
+            stroke="currentColor"
           >
             <circle cx="12" cy="5" r="1.5" />
             <circle cx="12" cy="12" r="1.5" />

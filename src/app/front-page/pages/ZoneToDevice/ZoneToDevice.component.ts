@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { FrontService } from '../../services/front-service';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'zone-to-device',
   standalone: true,
-  imports: [NavbarComponent, NgFor],
+  imports: [NavbarComponent, NgFor, NgIf],
   templateUrl: './ZoneToDevice.component.html',
 })
 export class ZoneToDeviceComponent {

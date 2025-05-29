@@ -73,7 +73,7 @@ export class CreateZonesComponent implements OnInit {
 
     /* Actualiza el campo devices del formulario con la nueva lista de IDs. */
     this.CreateForm.patchValue({ devices: devicesZone });
-    /* Llama a updateValueAndValidity  para que   actualice el estado del campo si era obligatorio y ahora está vacio, se marca como invalido   */
+    /* Llama a updateValueAndValidity  para que   actualice el estado del campo si era obligatorio y ahora esta vacio, se marca como invalido   */
     this.CreateForm.get('devices')?.updateValueAndValidity();
   }
 }

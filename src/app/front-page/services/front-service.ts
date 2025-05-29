@@ -118,19 +118,19 @@ export class FrontService {
     type: string,
     fabricante: string,
     description: string,
-    zoneId?: string,
-    guid?: string,
-    createdAt?: number
+    zoneId: string,
+    guid: string,
+    createdAt: number
   ) {
     const body = {
       lat,
       lgn,
       type,
-      zoneId,
       fabricante,
       description,
       guid,
       createdAt,
+      zoneId,
     };
 
     return this.http.put(`${baseurl}/devices/modifyDevice/${deviceId}`, body);

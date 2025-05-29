@@ -71,6 +71,7 @@ export class ListDeviceComponent {
         },
       });
   }
+
   onPageChange(page: number) {
     this.ShowDevices(page);
   }

@@ -8,6 +8,12 @@
 </h3>
 
 <ul class="max-w-3xl mx-auto space-y-4">
+  <span
+    *ngIf="devicesFilter.length === 0"
+    class="flex items-center justify-between bg-white shadow p-4 rounded-lg"
+  >
+    No hay dispositivos sin zona
+  </span>
   <li
     *ngFor="let device of devicesFilter"
     class="flex items-center justify-between bg-white shadow p-4 rounded-lg"

@@ -9,7 +9,7 @@ import {
 import mapboxgl from 'mapbox-gl';
 import { FrontService } from '../../services/front-service';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
 import { environment } from './../../../../environments/environment';
 import { CreateDevice } from '../../interfaces/createDevice.interface';
 import { Router } from '@angular/router';
@@ -47,7 +47,7 @@ export class MenuComponent implements AfterViewInit {
 
   //Data mapa
   map = signal<mapboxgl.Map | null>(null);
-  zoom = signal(14);
+
   type: string = '';
   markers: mapboxgl.Marker[] = [];
   zones = signal<Zona[]>([]);
@@ -71,7 +71,7 @@ export class MenuComponent implements AfterViewInit {
       container: this.divElement.nativeElement,
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [-3.7849, 37.7796], // Jaen
-      zoom: this.zoom(),
+      zoom: 14,
     });
 
     this.getTraffic();
@@ -136,96 +136,6 @@ export class MenuComponent implements AfterViewInit {
 
       // Guardar el marker para poder eliminarlo luego
       this.markers.push(marker);
-
-      /*Intento,pintar mapas
-         if (!map.getSource('zona-jaen')) {
-        map.addSource('zona-jaen', {
-          type: 'geojson',
-          data: zonaSurJaenGeoJson,
-        });
-
-        map.addLayer({
-          id: 'zona-jaen-fill',
-          type: 'fill',
-          source: 'zona-jaen',
-          layout: {},
-          paint: {
-            'fill-color': '#ff6600', // Naranja
-            'fill-opacity': 0.4,
-          },
-        });
-
-        map.addLayer({
-          id: 'zona-jaen-outline',
-          type: 'line',
-          source: 'zona-jaen',
-          layout: {},
-          paint: {
-            'line-color': '#ff6600',
-            'line-width': 2,
-          },
-        });
-      }
-
-        // Zona Sur
-      if (!map.getSource('zonasur')) {
-        map.addSource('zonasur', {
-          type: 'geojson',
-          data: zonaNorteGeoJSON,
-        });
-
-        map.addLayer({
-          id: 'zonasur-fill',
-          type: 'fill',
-          source: 'zonasur',
-          layout: {},
-          paint: {
-            'fill-color': '#00cc66', // Verde
-            'fill-opacity': 0.4,
-          },
-        });
-
-        map.addLayer({
-          id: 'zonasur-outline',
-          type: 'line',
-          source: 'zonasur',
-          layout: {},
-          paint: {
-            'line-color': '#00cc66',
-            'line-width': 2,
-          },
-        });
-      }
-
-      // Zona Oeste
-      if (!map.getSource('zonajaenOeste')) {
-        map.addSource('zonajaenOeste', {
-          type: 'geojson',
-          data: zonaSurOesteGeoJSON,
-        });
-
-        map.addLayer({
-          id: 'zonajaenOeste-fill',
-          type: 'fill',
-          source: 'zonajaenOeste',
-          layout: {},
-          paint: {
-            'fill-color': '#3366ff', // Azul
-            'fill-opacity': 0.4,
-          },
-        });
-
-        map.addLayer({
-          id: 'zonajaenOeste-outline',
-          type: 'line',
-          source: 'zonajaenOeste',
-          layout: {},
-          paint: {
-            'line-color': '#3366ff',
-            'line-width': 2,
-          },
-        });
-      }*/
     });
   }
 
